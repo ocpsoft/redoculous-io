@@ -19,9 +19,18 @@
             <type>pom</type>
             <scope>import</scope>
          </dependency>
+         <dependency>
+            <groupId>org.ocpsoft.rewrite</groupId>
+            <artifactId>rewrite-servlet</artifactId>
+            <version>2.0.7.Final</version>
+         </dependency>
       </dependencies>
    </dependencyManagement>
    <dependencies>
+      <dependency>
+         <groupId>org.ocpsoft.rewrite</groupId>
+         <artifactId>rewrite-servlet</artifactId>
+      </dependency>
 
       <!-- Import the PicketLink API, we deploy this as library with the application, and can compile against it -->
       <dependency>

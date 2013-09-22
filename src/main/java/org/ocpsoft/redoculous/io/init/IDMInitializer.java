@@ -1,24 +1,21 @@
 package org.ocpsoft.redoculous.io.init;
 
-import static org.picketlink.idm.model.basic.BasicModel.addToGroup;
-import static org.picketlink.idm.model.basic.BasicModel.grantGroupRole;
-import static org.picketlink.idm.model.basic.BasicModel.grantRole;
-
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.RelationshipManager;
 import org.picketlink.idm.credential.Password;
+import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
 
-@Singleton
 @Startup
+@Singleton
 public class IDMInitializer
 {
 
@@ -56,6 +53,14 @@ public class IDMInitializer
       identityManager.add(jane);
       identityManager.updateCredential(jane, new Password("demo"));
 
+      // Create user jane
+      User lincoln = new User("lincoln");
+      lincoln.setEmail("lincoln@ocpsoft.org");
+      lincoln.setFirstName("Lincoln");
+      lincoln.setLastName("Baxter, III");
+      identityManager.add(lincoln);
+      identityManager.updateCredential(lincoln, new Password("lincoln"));
+
       // Create role "manager"
       Role manager = new Role("manager");
       identityManager.add(manager);
@@ -65,18 +70,18 @@ public class IDMInitializer
       identityManager.add(superuser);
 
       // Create group "sales"
-      Group sales = new Group("sales");
-      identityManager.add(sales);
+      Group customers = new Group("users");
+      identityManager.add(customers);
 
       RelationshipManager relationshipManager = this.partitionManager.createRelationshipManager();
 
       // Make john a member of the "sales" group
-      addToGroup(relationshipManager, john, sales);
+      BasicModel.addToGroup(relationshipManager, john, customers);
 
       // Make mary a manager of the "sales" group
-      grantGroupRole(relationshipManager, mary, manager, sales);
+      BasicModel.grantGroupRole(relationshipManager, mary, manager, customers);
 
       // Grant the "superuser" application role to jane
-      grantRole(relationshipManager, jane, superuser);
+      BasicModel.grantRole(relationshipManager, lincoln, superuser);
    }
 }
