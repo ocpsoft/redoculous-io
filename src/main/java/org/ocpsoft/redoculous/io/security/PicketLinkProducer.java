@@ -12,7 +12,11 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.picketlink.Identity;
 import org.picketlink.annotations.PicketLink;
+import org.picketlink.idm.IdentityManager;
+import org.picketlink.idm.model.Account;
+import org.picketlink.idm.model.basic.User;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
@@ -28,6 +32,23 @@ public class PicketLinkProducer
 
    @Produces
    @PicketLink
-   @PersistenceContext(unitName = "picketlink-default")
+   @PersistenceContext(unitName = "primary")
    private EntityManager picketLinkEntityManager;
+
+   @Produces
+   @PersistenceContext(unitName = "primary")
+   private EntityManager defaultEntityManager;
+
+   @Produces
+   @RequestScoped
+   public User loggedInUser(Identity identity, IdentityManager manager)
+   {
+      Account account = identity.getAccount();
+      if (identity.isLoggedIn())
+      {
+         User loggedIn = manager.lookupIdentityById(User.class, account.getId());
+         return loggedIn;
+      }
+      return new User();
+   }
 }

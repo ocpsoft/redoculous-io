@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/WEB-INF/templates/site.xhtml">
+
+	<ui:param name="bodyClasses" value="login" />
+
+	<ui:define name="main">
+		<div id="login" class="accounts-form row">
+			<div class="span10 offset2">
+				<h1>Log in to your account</h1>
+			</div>
+
+			<div class="span4 offset2 social">
+				<div>
+					<h:form class="connect-button" id="twitter-connect-form">
+						<a href="#"
+							onclick="$('#twitter-connect-form').submit(); return false;"
+							class="btn" id="twitter_button"><i class=" icon-twitter"></i>Log
+							in with Twitter</a>
+					</h:form>
+
+					<h:form class="connect-button" id="facebook-connect-form">
+						<a href="#"
+							onclick="$('#facebook-connect-form').submit(); return false;"
+							class="btn" id="facebook_button"><i class="icon-facebook"></i>Log
+							in with Facebook</a>
+					</h:form>
+
+					<h:form>
+						<p>
+							<small>Don't have an account? <h:link outcome="/signup"
+									value="Sign up" /></small>
+						</p>
+					</h:form>
+				</div>
+			</div>
+
+			<div class="span6">
+				<h:form id="auth-form">
+					<div class="all-errors">
+						<h:messages globalOnly="true" />
+					</div>
+					<div class="input">
+						<h:inputText id="username" value="#{loginCredentials.userId}" />
+					</div>
+					<div class="input">
+						<h:inputSecret id="password" value="#{loginCredentials.password}"
+							redisplay="true" />
+					</div>
+					<div class="actions">
+						<h:commandButton type="submit" id="login" value="Log In"
+							action="#{loginController.login}" styleClass="btn btn-primary" />
+						<h:link outcome="/recover" value="Forgot your password?" />
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</ui:define>
+
+	<ui:define name="footer"></ui:define>
+
+</ui:composition>
+
+</html>

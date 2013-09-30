@@ -2,11 +2,7 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
-   <persistence-unit name="picketlink-default">
-      <!-- If you are running in a production environment, add a managed data source, this example data source is just for 
-         development and testing! -->
-      <!-- The datasource is deployed as WEB-INF/picketlink-quickstart-ds.xml, you can find it in the source at src/main/webapp/WEB-INF/picketlink-quickstart-ds.xml -->
-
+   <persistence-unit name="primary" transaction-type="JTA">
       <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
 
       <class>org.picketlink.idm.jpa.model.sample.simple.AttributedTypeEntity</class>
@@ -20,8 +16,9 @@
       <class>org.picketlink.idm.jpa.model.sample.simple.PasswordCredentialTypeEntity</class>
       <class>org.picketlink.idm.jpa.model.sample.simple.AttributeTypeEntity</class>
 
+      <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
       <properties>
-         <!-- Properties for Hibernate -->
          <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
          <property name="hibernate.show_sql" value="false"/>
       </properties>

@@ -2,73 +2,258 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<p>This quickstart demonstrates how we can use PicketLink IDM's
-	groups and roles to provide authorization checks within an application.
-</p>
+<ui:composition template="/WEB-INF/templates/site.xhtml">
 
-<p>The identity management configuration is based on PicketLink's
-	JPAIdentityStore, which uses a database to store the application's
-	users, groups and roles, and the relationships between them.</p>
+	<ui:param name="bodyClasses" value="landing"></ui:param>
 
-<ui:fragment rendered="#{identity.loggedIn}">
-	<div>
-		Congratulations! You are currently logged in as: <b>#{identity.account.loginName}</b>
-	</div>
+	<ui:define name="main">
+		<div class="header container">
+			<div class="row">
+				<div class="span9">
+					<h1>
+						Build your online library<span> of amazing things</span>
+					</h1>
+					<p class="lead">Use Kippt to collect research, stories,
+						inspiration and notes</p>
+				</div>
+				<div class="span3">
+					<a href="/signup/" class="btn btn-primary pull-right">Get
+						Started</a>
+				</div>
+			</div>
+		</div>
 
-	<ui:fragment
-		rendered="#{authorizationChecker.hasApplicationRole('superuser')}">
-		<div>You have been granted the 'superuser' application role.</div>
-	</ui:fragment>
+		<div class="tiles">
+			<div id="wrap">
+				<div id="clips">
+					<ul class="clip-list tiles clearfix">
 
-	<ui:fragment rendered="#{authorizationChecker.isMember('sales')}">
-		<div>You are a member of the 'sales' group.</div>
-	</ui:fragment>
+						<li class="clip video image-scaled"><div class="bg"
+								style="background-image: url(https://d19weqihs4yh5u.cloudfront.net/links/7062c6df77a2bfebe784fe18c49d3a044c2e77ec/350x200);"></div>
+							<a href="/ks/code-hacking/clips/11720915" data-link="push"
+							class="clip-open">
+								<div class="overlay">
+									<div class="content">
+										<span class="play">▸</span>
+										<h3>Wilson Miner - When We Build</h3>
+										<div class="meta">vimeo.com</div>
+									</div>
+								</div>
+						</a></li>
 
-	<ui:fragment
-		rendered="#{authorizationChecker.hasGroupRole('manager', 'sales')}">
-		<div>You have been granted the 'manager' role in the 'sales'
-			group.</div>
-	</ui:fragment>
+						<li class="clip tweet"><div class="bg"></div> <a
+							href="/jorilallo/awesome/clips/11661929" data-link="push"
+							class="clip-open">
+								<div class="overlay">
+									<div class="content">
+										<h3>Twitter / Horse_ebooks: move products fast and turn</h3>
+										<div class="meta">twitter.com</div>
+									</div>
+								</div>
+						</a></li>
 
-	<h:form>
-		<h:commandButton id="logout" value="Log out"
-			action="#{identity.logout}" />
-	</h:form>
-</ui:fragment>
+						<li class="clip github-repository ruby"><div class="bg"></div>
+							<a href="/jorilallo/api-design/clips/11090739" data-link="push"
+							class="clip-open">
+								<div class="overlay">
+									<div class="content">
+										<h3>500px/api-documentation</h3>
+										<div class="meta">github.com · ruby</div>
+										<p class="description">This is the 500px API
+											documentation.</p>
+									</div>
+								</div>
+						</a></li>
 
-<h:form id="loginForm" rendered="#{not identity.loggedIn}">
-	<h:messages globalOnly="true" />
+						<li class="clip article image-scaled"><div class="bg"
+								style="background-image: url(https://d19weqihs4yh5u.cloudfront.net/links/739e67f0a765b1241d1f65f93885660a263e40dc/350x200);"></div>
+							<a href="/karrisaarinen/reading/clips/11624476" data-link="push"
+							class="clip-open">
+								<div class="overlay">
+									<div class="content">
+										<h3>Food Truck Economics</h3>
+										<div class="meta">blog.priceonomics.com</div>
 
-	<div class="loginRow">
-		<h:outputLabel for="name" value="Username" styleClass="loginLabel" />
-		<h:inputText id="name" value="#{loginCredentials.userId}" />
-	</div>
+									</div>
+								</div>
+						</a></li>
+						<li class="clip rich image-scaled"><div class="bg"
+								style="background-image: url(https://d19weqihs4yh5u.cloudfront.net/links/965fff2aff40927762d8d10064580c00e81ccc81/350x200);"></div>
+							<a href="/railsgirls/women-and-tech/clips/11624296"
+							data-link="push" class="clip-open">
+								<div class="overlay">
+									<div class="content">
+										<h3>The History of Women in Computing</h3>
+										<div class="meta">speakerdeck.com</div>
+									</div>
+								</div>
+						</a></li>
 
-	<div class="loginRow">
-		<h:outputLabel for="password" value="Password" styleClass="loginLabel" />
-		<h:inputSecret id="password" value="#{loginCredentials.password}"
-			redisplay="true" />
-	</div>
+					</ul>
+				</div>
+			</div>
+		</div>
 
-	<div class="loginRow"></div>
+		<script>
+			$(function() {
+				$("#slider").responsiveSlides({
+					auto : false,
+					pager : true,
+					speed : 300,
+					maxwidth : 1200
+				});
 
-	<div class="buttons">
-		<h:commandButton id="login" value="Login"
-			action="#{loginController.login}" styleClass="loginButton" />
-	</div>
+				var numRand = Math.floor(Math.random() * 2000)
+				$("#clips").css('left', -numRand)
 
-	<p>Tip: you can login with any of the following username/password
-		combinations:
-	<div>john/demo</div>
-	<div>mary/demo</div>
-	<div>jane/demo</div>
-	</p>
+				$(".close").on("click", function(e) {
+					e.preventDefault();
+					$(".trailer-embed").fadeOut();
+					$(".trailer-overlay").remove();
 
-	<p>Each of these accounts has different privileges assigned to
-		them.</p>
+				});
 
-</h:form>
+				(function($) {
 
-<br style="clear: both" />
+					$.fn.shuffle = function() {
+
+						var allElems = this.get(), getRandom = function(max) {
+							return Math.floor(Math.random() * max);
+						}, shuffled = $
+								.map(
+										allElems,
+										function() {
+											var random = getRandom(allElems.length), randEl = $(
+													allElems[random]).clone(
+													true)[0];
+											allElems.splice(random, 1);
+											return randEl;
+										});
+
+						this.each(function(i) {
+							$(this).replaceWith($(shuffled[i]));
+						});
+
+						return $(shuffled);
+
+					};
+
+				})(jQuery);
+
+				$('#clips .clip').shuffle();
+
+				$(".open-trailer")
+						.on(
+								"click",
+								function(e) {
+									e.preventDefault();
+									$(".trailer-embed")
+											.append(
+													'<div class="trailer-overlay"><iframe src="https://www.youtube.com/embed/s8z3UVn3Xhc?vq=hd720" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>')
+									$(".trailer-embed").fadeIn();
+								});
+			});
+		</script>
+
+		<div class="featurette container">
+			<h2>Your ideas and inspiration in one place</h2>
+			<p class="lead">With Kippt you can save links, read articles,
+				watch videos, share notes and much more. Your collections can be
+				private or public, or shared with the people you work with.</p>
+			<img src="https://d17f28g3dsa4vh.cloudfront.net/img/home-mac@2x.jpg"
+				alt="" />
+			<div class="video">
+				<a href="https://www.youtube.com/embed/s8z3UVn3Xhc?vq=hd720"
+					class="open-trailer"><i>&#9656;</i><span>Watch Demo</span></a>
+			</div>
+		</div>
+
+		<div class="featurette use left">
+			<div class="container">
+				<div class="row">
+
+					<ul id="slider" class="rslides">
+
+						<li>
+							<div class="span4">
+								<h3>Great for</h3>
+								<h2>Design Projects</h2>
+								<p>Use a collaborative list to collect inspiration and
+									materials for your next project. Save images from Dribbble or
+									from the web with just one click. Keep the discussion going in
+									one place.</p>
+							</div>
+							<div class="span8">
+								<div>
+									<img
+										src="https://d17f28g3dsa4vh.cloudfront.net/img/home-design@2x.jpg" />
+								</div>
+							</div>
+						</li>
+
+						<li>
+							<div class="span4">
+								<h3>Great for</h3>
+								<h2>Saving work resources</h2>
+								<p>Save useful resources like GitHub repositories, code
+									libraries, fonts, tools and services. Make notes writing
+									Markdown. Find the things you need with full-text search.</p>
+							</div>
+							<div class="span8">
+								<div>
+									<img
+										src="https://d17f28g3dsa4vh.cloudfront.net/img/home-work@2x.jpg" />
+								</div>
+							</div>
+						</li>
+
+						<li>
+							<div class="span4">
+								<h3>Great for</h3>
+								<h2>Company library</h2>
+								<p>Keep everyone on the same page and learn with
+									intra-company reading list. Track things like press hits,
+									competition or helpful knowledge in one library. Read, comment
+									and highlight the things you read.</p>
+							</div>
+							<div class="span8">
+								<div>
+									<img
+										src="https://d17f28g3dsa4vh.cloudfront.net/img/home-company@2x.jpg" />
+								</div>
+							</div>
+						</li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="featurette container lastcall" style="text-align: left">
+			<div class="span2 offset1">
+				<a href="https://sendtoinc.com/"><img
+					src="https://d17f28g3dsa4vh.cloudfront.net/img/logo-inc-g.png"
+					width="80" style="margin: 0" /></a>
+			</div>
+			<div class="span6">
+				<h2 style="margin: 10px 0 0; font-size: 28px">
+					<strong>Inc</strong> &#8212; A Kippt for Your Company
+				</h2>
+				<p class="lead">Share news, ideas and knowledge with your
+					co-workers</p>
+			</div>
+			<div class="span2">
+				<a href="https://sendtoinc.com/" target="_blank"
+					class="btn btn-primary pull-right"
+					style="background: #34B484; margin-top: 20px">Learn More &#155;</a>
+			</div>
+		</div>
+
+		<div class="trailer-embed" style="display: none">
+			<a href="" class="close">x</a>
+		</div>
+	</ui:define>
+
+</ui:composition>
 
 </html>

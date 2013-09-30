@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" lang="en">
+
+<h:head>
+	<script type="text/javascript">
+		var NREUMQ = NREUMQ || [];
+		NREUMQ.push([ "mark", "firstbyte", new Date().getTime() ]);
+	</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Redoculous</title>
+	<meta charset="utf-8" />
+	<script type="text/javascript" src="//use.typekit.net/rop5xco.js"></script>
+	<script type="text/javascript">
+		try {
+			Typekit.load();
+		} catch (e) {
+		}
+	</script>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+	<link rel="icon" type="image/png" href="" />
+	<link rel="apple-touch-icon-precomposed" href="" sizes="114x114" />
+	<link rel="fluid-icon" href="" title="Redoculous" />
+
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="" />
+	<link rel="apple-touch-icon-precomposed" href="" />
+	<link rel="chrome-webstore-item" href="" />
+	<h:outputStylesheet library="css" name="site.css" />
+	<h:outputScript library="js" name="site.js.min" />
+
+</h:head>
+
+<h:body class="page #{bodyClasses}">
+	<div class="navbar">
+		<div class="container">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".nav-collapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<h:link styleClass="navbar-brand" outcome="/home.xhtml">
+				<h:graphicImage library="img" name="logo.png" width="300" />
+			</h:link>
+			<div class="nav-collapse collapse">
+				<ul class="nav">
+					<li><h:link outcome="/about">About</h:link></li>
+					<li><a href="http://blog.redoculous.io/">Blog</a></li>
+					<li class="sep" />
+					<li><h:link outcome="/login">Log in</h:link></li>
+					<li class="signup"><h:link outcome="/signup">Sign up</h:link></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div id="main">
+		<ui:insert name="main">{main}</ui:insert>
+	</div>
+
+	<div id="push"></div>
+
+	<ui:insert name="footer">
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="span3">
+						<h5>Product</h5>
+						<h:link outcome="/apps">App Gallery</h:link>
+						<br />
+						<h:link outcome="/plans">Pricing</h:link>
+						<br />
+						<h:link outcome="/faq">Help</h:link>
+						<br />
+						<h:link outcome="/api">Developers / API</h:link>
+					</div>
+					<div class="span3">
+						<h5>About</h5>
+						<h:link outcome="/about">About Redoculous</h:link>
+						<br />
+						<h:link outcome="/press">Press</h:link>
+						<br />
+						<h:link outcome="/privacy">Privacy</h:link>
+						<br />
+						<h:link outcome="/terms">Terms</h:link>
+					</div>
+					<div class="span3">
+						<h5>Community</h5>
+						<a href="http://ocpsoft.org">Blog</a> <br /> <a
+							href="https://twitter.com/ocpsoft">Twitter</a> <br /> <a
+							href="https://facebook.com/ocpsoft">Facebook</a><br />
+						<h:link outcome="/about">Contact Us</h:link>
+					</div>
+					<div class="span3 lovingly">
+						<p>
+							Made in the U.S.A. <span>&#9829;</span>
+						</p>
+						<div style="margin-top: 10px">
+							by: <a href="http://ocpsoft.org"> <h:graphicImage
+									library="img" name="ocpsoft-logo.png" />
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</ui:insert>
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', '#{analytics.id}' ]);
+		_gaq.push([ '_trackPageview' ]);
+		_gaq.push([ '_trackPageLoadTime' ]);
+
+		_gaq.push([ '_setCustomVar', 1, 'Logged in', 'false', 2 ]);
+		_gaq.push([ '_setCustomVar', 2, 'Member', 'false', 1 ]);
+		_gaq.push([ '_setCustomVar', 4, 'Join month', '0', 1 ]);
+		_gaq.push([ '_setCustomVar', 5, 'Join year', '0', 1 ]);
+
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</h:body>
+</html>
