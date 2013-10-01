@@ -18,7 +18,7 @@ public class LoginController
    @Inject
    private FacesContext facesContext;
 
-   public void login()
+   public String login()
    {
       AuthenticationResult result = identity.login();
       if (AuthenticationResult.FAILED.equals(result))
@@ -28,5 +28,11 @@ public class LoginController
                   new FacesMessage("Authentication was unsuccessful.  Please check your username and password "
                            + "before trying again."));
       }
+      return "/account/dashboard.xhtml?faces-redirect=true";
+   }
+
+   public void logout()
+   {
+      identity.logout();
    }
 }

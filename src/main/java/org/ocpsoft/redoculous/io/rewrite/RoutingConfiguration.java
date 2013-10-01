@@ -1,14 +1,7 @@
-/*
- * Copyright 2013 Red Hat, Inc. and/or its affiliates.
- *
- * Licensed under the Eclipse Public License version 1.0, available at
- * http://www.eclipse.org/legal/epl-v10.html
- */
 package org.ocpsoft.redoculous.io.rewrite;
 
 import javax.servlet.ServletContext;
 
-import org.ocpsoft.rewrite.annotation.RewriteConfiguration;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
@@ -23,7 +16,6 @@ import org.ocpsoft.rewrite.servlet.config.rule.Join;
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-@RewriteConfiguration
 public class RoutingConfiguration extends HttpConfigurationProvider
 {
 
@@ -33,7 +25,7 @@ public class RoutingConfiguration extends HttpConfigurationProvider
       return ConfigurationBuilder.begin()
 
                /*
-                * Security constraints
+                * Block direct file access.
                 */
                .addRule()
                .when(DispatchType.isRequest().and(Direction.isInbound())
@@ -46,8 +38,6 @@ public class RoutingConfiguration extends HttpConfigurationProvider
                /*
                 * Application Routes
                 */
-               .addRule(Join.path("/").to("/faces/home.xhtml"))
-
                .addRule(Join.path("/{p}").to("/faces/{p}.xhtml"))
                .when(Resource.exists("/{p}.xhtml").andNot(ServletMapping.includes("/{p}")))
                .where("p").matches(".*")
@@ -61,6 +51,6 @@ public class RoutingConfiguration extends HttpConfigurationProvider
    @Override
    public int priority()
    {
-      return 0;
+      return Integer.MAX_VALUE;
    }
 }

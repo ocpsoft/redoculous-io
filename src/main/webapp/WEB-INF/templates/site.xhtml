@@ -51,11 +51,20 @@
 			</h:link>
 			<div class="nav-collapse collapse">
 				<ul class="nav">
-					<li><h:link outcome="/about">About</h:link></li>
-					<li><a href="http://blog.redoculous.io/">Blog</a></li>
-					<li class="sep" />
-					<li><h:link outcome="/login">Log in</h:link></li>
-					<li class="signup"><h:link outcome="/signup">Sign up</h:link></li>
+					<ui:fragment rendered="#{not identity.loggedIn}">
+						<li><h:link outcome="/about">About</h:link></li>
+						<li><a href="http://blog.redoculous.io/">Blog</a></li>
+						<li class="sep" />
+						<li><h:link outcome="/login">Log in</h:link></li>
+						<li class="signup"><h:link outcome="/signup">Sign up</h:link></li>
+					</ui:fragment>
+					<ui:fragment rendered="#{identity.loggedIn}">
+						<li><h:link outcome="/account/repositories">Repositories</h:link></li>
+						<li><h:link outcome="/account/settings">Account</h:link></li>
+						<li><h:link outcome="/account/stats">Stats</h:link></li>
+						<li class="sep" />
+						<li><h:outputLink value="#{request.contextPath}/logout">Log out</h:outputLink></li>
+					</ui:fragment>
 				</ul>
 			</div>
 		</div>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ * Copyright 2011 <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,42 +17,41 @@ package org.ocpsoft.redoculous.io.rewrite;
 
 import javax.servlet.ServletContext;
 
-import org.ocpsoft.logging.Logger;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
-import org.ocpsoft.rewrite.context.EvaluationContext;
 import org.ocpsoft.rewrite.servlet.config.DispatchType;
+import org.ocpsoft.rewrite.servlet.config.Header;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
-import org.ocpsoft.rewrite.servlet.config.HttpOperation;
-import org.ocpsoft.rewrite.servlet.http.event.HttpServletRewrite;
+import org.ocpsoft.rewrite.servlet.config.RequestParameter;
+import org.ocpsoft.rewrite.servlet.config.Response;
 
-/**
- * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
- */
-public class LoggingConfiguration extends HttpConfigurationProvider
+public class GZipConfiguration extends HttpConfigurationProvider
 {
-   private Logger log = Logger.getLogger(LoggingConfiguration.class);
-
    @Override
    public Configuration getConfiguration(ServletContext context)
    {
       return ConfigurationBuilder.begin()
+               /*
+                * Set up compression.
+                */
                .addRule()
-               .when(DispatchType.isRequest())
-               .perform(new HttpOperation()
-               {
-                  @Override
-                  public void performHttp(HttpServletRewrite event, EvaluationContext context)
-                  {
-                     log.info("A [" + event.getRequest().getRemoteAddr() + "] " + event.getRequest().getMethod()
-                              + " " + event.getAddress().toString());
-                  }
-               });
+               .when(DispatchType.isRequest().
+                        and(Header.matches("{Accept-Encoding}", "{gzip}")).
+                        andNot(RequestParameter.exists("nogzip")))
+               .perform(Response.gzipStreamCompression())
+
+               .where("Accept-Encoding")
+               .matches("(?i)Accept-Encoding")
+               .where("gzip")
+               .matches("(?i).*\\bgzip\\b.*");
    }
 
    @Override
    public int priority()
    {
-      return Integer.MIN_VALUE + 1;
+      /*
+       * Very high priority.
+       */
+      return -100000;
    }
 }
