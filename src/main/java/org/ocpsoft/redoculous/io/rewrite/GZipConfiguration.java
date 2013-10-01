@@ -22,6 +22,7 @@ import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.servlet.config.DispatchType;
 import org.ocpsoft.rewrite.servlet.config.Header;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
+import org.ocpsoft.rewrite.servlet.config.Path;
 import org.ocpsoft.rewrite.servlet.config.RequestParameter;
 import org.ocpsoft.rewrite.servlet.config.Response;
 
@@ -37,7 +38,8 @@ public class GZipConfiguration extends HttpConfigurationProvider
                .addRule()
                .when(DispatchType.isRequest().
                         and(Header.matches("{Accept-Encoding}", "{gzip}")).
-                        andNot(RequestParameter.exists("nogzip")))
+                        andNot(RequestParameter.exists("nogzip")).
+                        andNot(Path.matches("{*}/javax.faces.resource/{*}")))
                .perform(Response.gzipStreamCompression())
 
                .where("Accept-Encoding")
