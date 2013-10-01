@@ -6,6 +6,7 @@ import javax.servlet.ServletContext;
 import org.ocpsoft.redoculous.io.rewrite.elements.AuthenticationStatus;
 import org.ocpsoft.redoculous.io.rewrite.elements.ValueBinding;
 import org.ocpsoft.redoculous.io.security.AuthorizationChecker;
+import org.ocpsoft.redoculous.io.security.LoginController;
 import org.ocpsoft.rewrite.config.Condition;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
@@ -30,7 +31,8 @@ public class SecurityConfiguration extends HttpConfigurationProvider
    public Configuration getConfiguration(final ServletContext context)
    {
 
-      return ConfigurationBuilder.begin()
+      return ConfigurationBuilder
+               .begin()
 
                /*
                 * Administrative features
@@ -51,7 +53,8 @@ public class SecurityConfiguration extends HttpConfigurationProvider
                .addRule()
                .when(Path.matches("/account/{*}")
                         .andNot(AuthenticationStatus.isLoggedIn(identity)))
-               .perform(Redirect.temporary(context.getContextPath() + "/login?returnTo={url}"))
+               .perform(Redirect.temporary(context.getContextPath() + "/login?" + LoginController.RETURN_TO_PARAM
+                        + "={url}"))
                .where("url").bindsTo(new ValueBinding() {
                   @Override
                   public Object retrieve(Rewrite event, EvaluationContext context)

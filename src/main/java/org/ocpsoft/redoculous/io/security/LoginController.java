@@ -12,7 +12,7 @@ import org.picketlink.Identity.AuthenticationResult;
 @Named
 public class LoginController
 {
-   public static String RETURN_TO = "returnTo";
+   public static String RETURN_TO_PARAM = "returnTo";
 
    @Inject
    private Identity identity;
@@ -31,7 +31,7 @@ public class LoginController
                            + "before trying again."));
       }
 
-      String target = context.getExternalContext().getRequestParameterMap().get(RETURN_TO);
+      String target = context.getExternalContext().getRequestParameterMap().get(RETURN_TO_PARAM);
       if (target != null && !target.isEmpty())
       {
          return AddressBuilder.begin().path(target).query("faces-redirect", "true").toString();
