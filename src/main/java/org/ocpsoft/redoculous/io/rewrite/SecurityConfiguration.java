@@ -10,6 +10,8 @@ import org.ocpsoft.redoculous.io.view.LoginController;
 import org.ocpsoft.rewrite.config.Condition;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
+import org.ocpsoft.rewrite.config.Not;
+import org.ocpsoft.rewrite.config.Subset;
 import org.ocpsoft.rewrite.context.EvaluationContext;
 import org.ocpsoft.rewrite.event.Rewrite;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
@@ -35,38 +37,48 @@ public class SecurityConfiguration extends HttpConfigurationProvider
                .begin()
 
                /*
-                * Administrative features
+                * Administrative features (Subset used for performance.)
                 */
                .addRule()
-               .when(Path.matches("/admin/{*}").andNot(new Condition() {
-                  @Override
-                  public boolean evaluate(Rewrite event, EvaluationContext context)
-                  {
-                     return auth.isMember("administrators");
-                  }
-               }))
-               .perform(SendStatus.code(401))
+               .when(Path.matches("/admin/{*}"))
+               .perform(Subset.evaluate(ConfigurationBuilder.begin()
+                        .addRule()
+                        .when(Not.any(administrator))
+                        .perform(SendStatus.code(401)))
+               )
 
                /*
                 * User account page restriction and redirect to login page
                 */
                .addRule()
                .when(Path.matches("/account/{*}")
-                        .andNot(AuthenticationStatus.isLoggedIn(identity)))
-               .perform(Redirect.temporary(context.getContextPath() + "/login?" + LoginController.RETURN_TO_PARAM
-                        + "={url}"))
-               .where("url").bindsTo(new ValueBinding() {
-                  @Override
-                  public Object retrieve(Rewrite event, EvaluationContext context)
-                  {
-                     HttpServletRewrite rewrite = (HttpServletRewrite) event;
-                     String url = rewrite.getAddress().getPathAndQuery();
-                     if (url.startsWith(rewrite.getContextPath()))
-                        url = url.substring(rewrite.getContextPath().length());
-                     return url;
-                  }
-               });
+                        .andNot(AuthenticationStatus.isLoggedIn(identity))
+               )
+               .perform(Redirect.temporary(context.getContextPath() + "/login?" +
+                        LoginController.RETURN_TO_PARAM + "={url}")
+               )
+               .where("url").bindsTo(requestedPath);
    }
+
+   Condition administrator = new Condition() {
+      @Override
+      public boolean evaluate(Rewrite event, EvaluationContext context)
+      {
+         return auth.isMember("administrators");
+      }
+   };
+
+   ValueBinding requestedPath = new ValueBinding() {
+      @Override
+      public Object retrieve(Rewrite event, EvaluationContext context)
+      {
+         HttpServletRewrite rewrite = (HttpServletRewrite) event;
+         String url = rewrite.getAddress().getPathAndQuery();
+         if (url.startsWith(rewrite.getContextPath()))
+            url = url.substring(rewrite.getContextPath().length());
+         return url;
+      }
+   };
 
    @Override
    public int priority()

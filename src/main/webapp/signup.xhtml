@@ -47,17 +47,22 @@
 			<div class="span6">
 				<h:form id="auth-form">
 					<div class="all-errors">
-						<h:messages globalOnly="true" />
+						<h:messages
+							style="list-style-type: none; margin: 0px; padding: 0px;"
+							globalOnly="false" errorClass="alert alert-error"
+							infoClass="alert alert-info" warnClass="alert" />
 					</div>
 					<div class="input">
-						<h:inputText id="username" value="#{signupController.username}" />
+						<h:inputText id="username" value="#{signupController.username}"
+							validator="#{signupController.validateUsername}" />
 					</div>
 					<div class="input">
-						<h:inputText id="email" value="#{signupController.email}" />
+						<h:inputText id="email" value="#{signupController.email}"
+							validator="#{signupController.validateEmail}" />
 					</div>
 					<div class="input">
 						<h:inputSecret id="password" value="#{signupController.password}"
-							redisplay="true" />
+							redisplay="true" validator="#{signupController.validatePassword}" />
 					</div>
 					<div class="actions">
 						<h:commandButton type="submit" id="login" value="Create account"

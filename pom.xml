@@ -10,6 +10,7 @@
    <properties>
       <version.jboss.bom.eap>6.2.0-redhat-1</version.jboss.bom.eap>
       <version.deltaspike>0.5</version.deltaspike>
+      <version.picketlink>2.5.2.Final</version.picketlink>
       <version.rewrite>2.0.8.Final</version.rewrite>
    </properties>
 
@@ -57,6 +58,7 @@
       <dependency>
          <groupId>org.picketlink</groupId>
          <artifactId>picketlink-api</artifactId>
+         <version>${version.picketlink}</version>
       </dependency>
 
       <!-- Import the PicketLink implementation, we deploy this as library with the application, but can't compile against 
@@ -64,24 +66,28 @@
       <dependency>
          <groupId>org.picketlink</groupId>
          <artifactId>picketlink-impl</artifactId>
+         <version>${version.picketlink}</version>
       </dependency>
 
       <!-- Import the PicketLink IDM API, we deploy this as library with the application, and can compile against it -->
       <dependency>
          <groupId>org.picketlink</groupId>
          <artifactId>picketlink-idm-api</artifactId>
+         <version>${version.picketlink}</version>
       </dependency>
 
       <!-- Import the PicketLink IDM API, we deploy this as library with the application, and can compile against it -->
       <dependency>
          <groupId>org.picketlink</groupId>
          <artifactId>picketlink-idm-impl</artifactId>
+         <version>${version.picketlink}</version>
       </dependency>
 
       <!-- Import the PicketLink IDM Simple Schema, which provides some built-in JPA entities for the sample model -->
       <dependency>
          <groupId>org.picketlink</groupId>
          <artifactId>picketlink-idm-simple-schema</artifactId>
+         <version>${version.picketlink}</version>
       </dependency>
 
       <!-- Import the EJB API, we use provided scope as the API is included in JBoss AS 7 -->

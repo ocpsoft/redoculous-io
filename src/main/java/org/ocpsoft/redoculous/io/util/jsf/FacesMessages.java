@@ -181,17 +181,32 @@ public class FacesMessages
 
    public static void addInfo(FacesContext context, String message)
    {
-      context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, ""));
+      context.addMessage(null, info(message));
+   }
+
+   public static FacesMessage info(String message)
+   {
+      return new FacesMessage(FacesMessage.SEVERITY_INFO, message, "");
    }
 
    public static void addWarning(FacesContext context, String message)
    {
-      context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, ""));
+      context.addMessage(null, warning(message));
+   }
+
+   public static FacesMessage warning(String message)
+   {
+      return new FacesMessage(FacesMessage.SEVERITY_WARN, message, "");
    }
 
    public static void addError(FacesContext context, String message)
    {
-      context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, ""));
+      context.addMessage(null, error(message));
+   }
+
+   public static FacesMessage error(String message)
+   {
+      return new FacesMessage(FacesMessage.SEVERITY_ERROR, message, "");
    }
 
 }

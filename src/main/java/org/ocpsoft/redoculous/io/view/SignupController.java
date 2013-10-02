@@ -4,9 +4,14 @@ import java.io.Serializable;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.ocpsoft.redoculous.io.util.Threads;
+import org.ocpsoft.redoculous.io.util.jsf.FacesMessages;
 import org.picketlink.credential.DefaultLoginCredentials;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
@@ -32,28 +37,73 @@ public class SignupController implements Serializable
    @Inject
    private DefaultLoginCredentials credentials;
 
+   private static final int VALIDATION_FAILURE_DELAY = 200;
    private String username;
    private String email;
    private String password;
 
-   public String signup()
+   public Object signup()
    {
       User user = new User(username);
       user.setEmail(email);
 
-      IdentityManager identityManager = this.partitionManager.createIdentityManager();
+      IdentityManager identityManager = partitionManager.createIdentityManager();
       identityManager.add(user);
       identityManager.updateCredential(user, new Password(password));
 
       Group users = BasicModel.getGroup(identityManager, "users");
-      RelationshipManager relationshipManager = this.partitionManager.createRelationshipManager();
+      RelationshipManager relationshipManager = partitionManager.createRelationshipManager();
       BasicModel.addToGroup(relationshipManager, user, users);
+
+      FacesMessages.addInfo(FacesContext.getCurrentInstance(), "Account created. You are now ready to get Redoculous!");
 
       credentials.setUserId(username);
       credentials.setPassword(password);
       return loginController.login();
    }
 
+   public void validateUsername(FacesContext context, UIComponent component, Object value)
+   {
+      if (value instanceof String)
+      {
+         User user = BasicModel.getUser(partitionManager.createIdentityManager(), (String) value);
+         if (user == null)
+         {
+            return;
+         }
+      }
+      Threads.sleep(VALIDATION_FAILURE_DELAY);
+      throw new ValidatorException(FacesMessages.error("Username is unavailable."));
+   }
+
+   public void validateEmail(FacesContext context, UIComponent component, Object value)
+   {
+      if (value instanceof String)
+      {
+         boolean emailExists = partitionManager.createIdentityManager().createIdentityQuery(User.class)
+                  .setParameter(User.EMAIL, email).getResultCount() > 0;
+         if (!emailExists && ((String) value).matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                  + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"))
+            return;
+      }
+      Threads.sleep(VALIDATION_FAILURE_DELAY);
+      throw new ValidatorException(FacesMessages.error("Email address is not valid."));
+   }
+
+   public void validatePassword(FacesContext context, UIComponent component, Object value)
+   {
+      if (value instanceof String)
+      {
+         if (((String) value).length() >= 8)
+            return;
+      }
+      Threads.sleep(VALIDATION_FAILURE_DELAY);
+      throw new ValidatorException(FacesMessages.error("Password must be at least eight characters long."));
+   }
+
+   /*
+    * Getter & Setters
+    */
    public String getUsername()
    {
       return username;
