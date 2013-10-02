@@ -14,7 +14,7 @@ import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.Role;
 
-@Named
+@Named("auth")
 public class AuthorizationChecker
 {
 

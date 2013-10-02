@@ -2,11 +2,11 @@ package org.ocpsoft.redoculous.io.view;
 
 import java.io.Serializable;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.ocpsoft.redoculous.io.util.jsf.FacesMessages;
 import org.ocpsoft.urlbuilder.AddressBuilder;
 import org.picketlink.Identity;
 import org.picketlink.Identity.AuthenticationResult;
@@ -29,10 +29,8 @@ public class LoginController implements Serializable
       AuthenticationResult result = identity.login();
       if (AuthenticationResult.FAILED.equals(result))
       {
-         context.addMessage(
-                  null,
-                  new FacesMessage("Authentication was unsuccessful.  Please check your username and password "
-                           + "before trying again."));
+         FacesMessages.addError(context,
+                  "Login was unsuccessful. Please check your username and password before trying again.");
       }
 
       String target = context.getExternalContext().getRequestParameterMap().get(RETURN_TO_PARAM);

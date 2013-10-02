@@ -59,6 +59,9 @@
 						<li class="signup"><h:link outcome="/signup">Sign up</h:link></li>
 					</ui:fragment>
 					<ui:fragment rendered="#{identity.loggedIn}">
+						<ui:fragment rendered="#{auth.isMember('administrators')}">
+							<li><h:link outcome="/admin/index.xhtml">Admin</h:link></li>
+						</ui:fragment>
 						<li><h:link outcome="/account/repositories">Repositories</h:link></li>
 						<li><h:link outcome="/account/settings">Account</h:link></li>
 						<li><h:link outcome="/account/stats">Stats</h:link></li>
@@ -71,6 +74,10 @@
 	</div>
 
 	<div id="main">
+		<h:messages styleClass="span8 cols offset2"
+			style="list-style-type: none; padding-left: 0px;" globalOnly="true"
+			errorClass="alert alert-error" infoClass="alert alert-info"
+			warnClass="alert" />
 		<ui:insert name="main">{main}</ui:insert>
 	</div>
 
