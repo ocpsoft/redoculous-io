@@ -66,14 +66,19 @@ public class SignupController implements Serializable
    {
       if (value instanceof String)
       {
-         User user = BasicModel.getUser(partitionManager.createIdentityManager(), (String) value);
-         if (user == null)
+         if (((String) value).length() < 3)
          {
-            return;
+            Threads.sleep(VALIDATION_FAILURE_DELAY);
+            throw new ValidatorException(FacesMessages.error("Username must be at least three characters long."));
+         }
+
+         User user = BasicModel.getUser(partitionManager.createIdentityManager(), (String) value);
+         if (user != null)
+         {
+            Threads.sleep(VALIDATION_FAILURE_DELAY);
+            throw new ValidatorException(FacesMessages.error("Username is unavailable."));
          }
       }
-      Threads.sleep(VALIDATION_FAILURE_DELAY);
-      throw new ValidatorException(FacesMessages.error("Username is unavailable."));
    }
 
    public void validateEmail(FacesContext context, UIComponent component, Object value)
@@ -82,12 +87,20 @@ public class SignupController implements Serializable
       {
          boolean emailExists = partitionManager.createIdentityManager().createIdentityQuery(User.class)
                   .setParameter(User.EMAIL, email).getResultCount() > 0;
-         if (!emailExists && ((String) value).matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+
+         if (emailExists)
+         {
+            Threads.sleep(VALIDATION_FAILURE_DELAY);
+            throw new ValidatorException(FacesMessages.error("Email address is already associated with an account."));
+         }
+
+         if (!((String) value).matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                   + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"))
-            return;
+         {
+            Threads.sleep(VALIDATION_FAILURE_DELAY);
+            throw new ValidatorException(FacesMessages.error("Email address is not valid."));
+         }
       }
-      Threads.sleep(VALIDATION_FAILURE_DELAY);
-      throw new ValidatorException(FacesMessages.error("Email address is not valid."));
    }
 
    public void validatePassword(FacesContext context, UIComponent component, Object value)

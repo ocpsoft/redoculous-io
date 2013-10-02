@@ -33,12 +33,13 @@ public class IDMInitializer
       identityManager.add(lincoln);
       identityManager.updateCredential(lincoln, new Password("lincoln"));
 
-      Group customers = new Group("users");
-      identityManager.add(customers);
+      Group users = new Group("users");
+      identityManager.add(users);
       Group administrators = new Group("administrators");
       identityManager.add(administrators);
 
       RelationshipManager relationshipManager = this.partitionManager.createRelationshipManager();
+      BasicModel.addToGroup(relationshipManager, lincoln, users);
       BasicModel.addToGroup(relationshipManager, lincoln, administrators);
    }
 }
