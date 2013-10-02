@@ -50,18 +50,18 @@
 						<h:messages globalOnly="true" />
 					</div>
 					<div class="input">
-						<h:inputText id="username" value="#{loginCredentials.userId}" />
+						<h:inputText id="username" value="#{signupController.username}" />
 					</div>
 					<div class="input">
-						<h:inputText id="email" value="#{loginCredentials.userId}" />
+						<h:inputText id="email" value="#{signupController.email}" />
 					</div>
 					<div class="input">
-						<h:inputSecret id="password" value="#{loginCredentials.password}"
+						<h:inputSecret id="password" value="#{signupController.password}"
 							redisplay="true" />
 					</div>
 					<div class="actions">
 						<h:commandButton type="submit" id="login" value="Create account"
-							action="#{loginController.login}" styleClass="btn btn-green" />
+							action="#{signupController.signup}" styleClass="btn btn-green" />
 					</div>
 				</h:form>
 			</div>

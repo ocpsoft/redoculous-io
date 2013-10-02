@@ -14,13 +14,6 @@ import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.Role;
 
-/**
- * This is a utility bean that may be used by the view layer to determine whether the current user has specific
- * privileges.
- * 
- * @author Shane Bryzak
- * 
- */
 @Named
 public class AuthorizationChecker
 {

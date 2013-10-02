@@ -6,7 +6,7 @@ import javax.servlet.ServletContext;
 import org.ocpsoft.redoculous.io.rewrite.elements.AuthenticationStatus;
 import org.ocpsoft.redoculous.io.rewrite.elements.ValueBinding;
 import org.ocpsoft.redoculous.io.security.AuthorizationChecker;
-import org.ocpsoft.redoculous.io.security.LoginController;
+import org.ocpsoft.redoculous.io.view.LoginController;
 import org.ocpsoft.rewrite.config.Condition;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
@@ -71,6 +71,6 @@ public class SecurityConfiguration extends HttpConfigurationProvider
    @Override
    public int priority()
    {
-      return Integer.MIN_VALUE;
+      return Integer.MIN_VALUE + 1;
    }
 }

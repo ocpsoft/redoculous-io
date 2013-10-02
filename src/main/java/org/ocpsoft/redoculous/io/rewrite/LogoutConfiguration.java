@@ -3,7 +3,7 @@ package org.ocpsoft.redoculous.io.rewrite;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
-import org.ocpsoft.redoculous.io.security.LoginController;
+import org.ocpsoft.redoculous.io.view.LoginController;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
@@ -41,6 +41,6 @@ public class LogoutConfiguration extends HttpConfigurationProvider
    @Override
    public int priority()
    {
-      return 100;
+      return Integer.MIN_VALUE;
    }
 }
