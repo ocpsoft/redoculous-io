@@ -85,9 +85,8 @@ public class SignupController implements Serializable
    {
       if (value instanceof String)
       {
-         // FIXME https://issues.jboss.org/browse/PLINK-287
          boolean emailExists = partitionManager.createIdentityManager().createIdentityQuery(User.class)
-                  .setParameter(User.EMAIL, email).getResultCount() > 0;
+                  .setParameter(User.EMAIL, value).getResultCount() > 0;
 
          if (emailExists)
          {

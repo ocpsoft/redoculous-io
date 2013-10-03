@@ -1,9 +1,7 @@
 package org.ocpsoft.redoculous.io.rewrite;
 
-import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
-import org.ocpsoft.redoculous.io.view.LoginController;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
@@ -20,9 +18,6 @@ import org.ocpsoft.rewrite.servlet.http.event.HttpServletRewrite;
 public class LogoutConfiguration extends HttpConfigurationProvider
 {
 
-   @Inject
-   private LoginController controller;
-
    @Override
    public Configuration getConfiguration(ServletContext context)
    {
@@ -33,7 +28,7 @@ public class LogoutConfiguration extends HttpConfigurationProvider
                   @Override
                   public void performHttp(HttpServletRewrite event, EvaluationContext context)
                   {
-                     controller.logout();
+                     event.getRequest().getSession().invalidate();
                   }
                }.and(Redirect.temporary(context.getContextPath() + "/")));
    }

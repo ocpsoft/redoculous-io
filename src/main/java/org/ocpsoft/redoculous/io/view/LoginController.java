@@ -34,7 +34,7 @@ public class LoginController implements Serializable
          FacesMessages.addError(context,
                   "Login was unsuccessful. Please check your username and password before trying again.");
          Threads.sleep(VALIDATION_FAILURE_DELAY);
-         return Navigate.to("");
+         return "";
       }
 
       String target = context.getExternalContext().getRequestParameterMap().get(RETURN_TO_PARAM);
