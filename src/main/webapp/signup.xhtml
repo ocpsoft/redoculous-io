@@ -64,6 +64,16 @@
 						<h:inputSecret id="password" value="#{signupController.password}"
 							redisplay="true" validator="#{signupController.validatePassword}" />
 					</div>
+					
+					
+					<script type="text/javascript">
+						$(document).ready(function() {
+							$('#auth-form\\:username').attr("placeholder", "Your username").focus();
+							$('#auth-form\\:email').attr("placeholder", "Your email address").focus();
+							$('#auth-form\\:password').attr("placeholder", "Your password").focus();
+						});
+					</script>
+					
 					<div class="actions">
 						<h:commandButton type="submit" id="login" value="Create account"
 							action="#{signupController.signup}" styleClass="btn btn-green" />

@@ -49,10 +49,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 @MappedSuperclass
+@SuppressWarnings("serial")
 public abstract class PersistentObject<E extends PersistentObject<?>> implements Serializable
 {
-   private static final long serialVersionUID = -1272280183658745494L;
-
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
    @Column(name = "id", updatable = false, nullable = false)

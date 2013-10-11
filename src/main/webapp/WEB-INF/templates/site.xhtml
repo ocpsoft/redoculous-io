@@ -9,7 +9,10 @@
 		NREUMQ.push([ "mark", "firstbyte", new Date().getTime() ]);
 	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Redoculous</title>
+
+	<ui:param name="subpageTitle" value="Redoculous | #{pageTitle}" />
+	<title>#{pageTitle == null ? "Redoculous" : subPageTitle}</title>
+
 	<meta charset="utf-8" />
 	<script type="text/javascript" src="//use.typekit.net/rop5xco.js"></script>
 	<script type="text/javascript">
@@ -24,7 +27,8 @@
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 
-	<link rel="icon" type="image/png" href="" />
+	<link rel="icon" type="image/png"
+		href="#{request.contextPath}/favicon.ico" />
 	<link rel="apple-touch-icon-precomposed" href="" sizes="114x114" />
 	<link rel="fluid-icon" href="" title="Redoculous" />
 
@@ -62,7 +66,7 @@
 						<ui:fragment rendered="#{auth.isMember('administrators')}">
 							<li><h:link outcome="/admin/index.xhtml">Admin</h:link></li>
 						</ui:fragment>
-						<li><h:link outcome="/account/repositories">Repositories</h:link></li>
+						<li><h:link outcome="/account/repositories/index.xhtml">Repositories</h:link></li>
 						<li><h:link outcome="/account/settings">Account</h:link></li>
 						<li><h:link outcome="/account/stats">Stats</h:link></li>
 						<li class="sep" />

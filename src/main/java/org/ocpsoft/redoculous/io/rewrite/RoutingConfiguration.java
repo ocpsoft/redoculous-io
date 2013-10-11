@@ -38,14 +38,19 @@ public class RoutingConfiguration extends HttpConfigurationProvider
                /*
                 * Application Routes
                 */
+               .addRule(Join.path("/{p}/").to("/faces/{p}/index.xhtml"))
+               .when(Resource.exists("/{p}/index.xhtml"))
+               .where("p").matches(".*")
+
                .addRule(Join.path("/{p}").to("/faces/{p}.xhtml"))
-               .when(Resource.exists("/{p}.xhtml").andNot(ServletMapping.includes("/{p}")))
+               .when(Resource.exists("/{p}.xhtml"))
                .where("p").matches(".*")
 
                /*
                 * Resources routes
                 */
-               .addRule(Join.path("/img/{p}").to("/resources/img/{p}"));
+               .addRule(Join.path("/img/{p}").to("/resources/img/{p}"))
+               .addRule(Join.path("/favicon.ico").to("/resources/img/redoculous-favicon-64x64.ico"));
    }
 
    @Override
