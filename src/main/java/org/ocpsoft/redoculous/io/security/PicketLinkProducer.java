@@ -36,10 +36,6 @@ public class PicketLinkProducer
    private EntityManager picketLinkEntityManager;
 
    @Produces
-   @PersistenceContext(unitName = "primary")
-   private EntityManager defaultEntityManager;
-
-   @Produces
    @RequestScoped
    public User loggedInUser(Identity identity, IdentityManager manager)
    {

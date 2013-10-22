@@ -16,7 +16,9 @@
 
 package org.ocpsoft.redoculous.io.util.jsf;
 
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -24,13 +26,22 @@ import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 /**
  * @author Lincoln Baxter, III <lincoln@ocpsoft.com>
  */
+@Named
 public class FacesMessages
 {
    protected static final String token = "org.ocpsoft.rewrite.prettyfaces.SAVED_FACES_MESSAGES";
+
+   public String dump(Throwable exception)
+   {
+      StringWriter stringWriter = new StringWriter();
+      exception.printStackTrace(new PrintWriter(stringWriter, true));
+      return stringWriter.toString().trim().replaceAll("(Caused by)", "\n\n$1");
+   }
 
    @SuppressWarnings("unchecked")
    public int saveMessages(final FacesContext facesContext, final Map<String, Object> destination)

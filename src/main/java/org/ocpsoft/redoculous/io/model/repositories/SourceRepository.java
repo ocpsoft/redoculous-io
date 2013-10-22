@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 import org.ocpsoft.redoculous.io.model.DeletableObject;
+import org.ocpsoft.redoculous.io.model.account.UserProfile;
 
 @Entity
 public class SourceRepository extends DeletableObject<SourceRepository>
@@ -18,25 +19,38 @@ public class SourceRepository extends DeletableObject<SourceRepository>
 
    @Column
    @Enumerated(EnumType.STRING)
-   private VCSType type;
+   private SourceRepositoryType type;
+
+   @Column
+   private String name;
 
    @Column
    private String apiKey;
 
    @ManyToOne
-   private Account account;
+   private UserProfile owner;
 
    /**
     * Getters and Setters
     */
-   public Account getAccount()
+   public String getName()
    {
-      return this.account;
+      return name;
    }
 
-   public void setAccount(final Account account)
+   public void setName(String name)
    {
-      this.account = account;
+      this.name = name;
+   }
+
+   public UserProfile getOwner()
+   {
+      return this.owner;
+   }
+
+   public void setOwner(final UserProfile account)
+   {
+      this.owner = account;
    }
 
    public String getUrl()
@@ -59,16 +73,20 @@ public class SourceRepository extends DeletableObject<SourceRepository>
       this.apiKey = apiKey;
    }
 
+   public SourceRepositoryType getType()
+   {
+      return type;
+   }
+
+   public void setType(SourceRepositoryType type)
+   {
+      this.type = type;
+   }
+
    @Override
    public String toString()
    {
-      String result = getClass().getSimpleName() + " ";
-      result += "serialVersionUID: " + serialVersionUID;
-      if (url != null && !url.trim().isEmpty())
-         result += ", url: " + url;
-      if (apiKey != null && !apiKey.trim().isEmpty())
-         result += ", apiKey: " + apiKey;
-      return result;
+      return url + " {key: " + apiKey + "}";
    }
 
 }

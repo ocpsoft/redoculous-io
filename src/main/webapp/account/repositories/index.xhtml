@@ -7,7 +7,42 @@
 
 	<ui:param name="bodyClasses" value="login" />
 
-	<ui:define name="main"></ui:define>
+	<ui:define name="main">
+		<div class="container">
+			<div class="row">
+				<h1>Repositories</h1>
+			</div>
+			<div class="row">
+
+				<ui:fragment rendered="#{empty profile.repositories}">
+					<p>You have not added any repositories.</p>
+				</ui:fragment>
+				<ui:fragment rendered="#{not empty profile.repositories}">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Repository URL</th>
+								<th>Owner</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ui:repeat var="r" value="#{profile.repositories.toArray()}">
+								<tr>
+									<td>#{r.name}</td>
+									<td>#{r.url}</td>
+									<td>#{r.owner.username}</td>
+								</tr>
+							</ui:repeat>
+						</tbody>
+					</table>
+				</ui:fragment>
+			</div>
+			<div class="row">
+				<h:link outcome="add" value="Add a repository" styleClass="btn" />
+			</div>
+		</div>
+	</ui:define>
 
 	<ui:define name="footer"></ui:define>
 

@@ -9,7 +9,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
 
+import org.ocpsoft.redoculous.io.model.account.UserProfile;
 import org.ocpsoft.redoculous.io.util.Threads;
 import org.ocpsoft.redoculous.io.util.jsf.FacesMessages;
 import org.picketlink.credential.DefaultLoginCredentials;
@@ -37,6 +39,9 @@ public class SignupController implements Serializable
    @Inject
    private DefaultLoginCredentials credentials;
 
+   @Inject
+   private EntityManager em;
+
    private static final int VALIDATION_FAILURE_DELAY = 200;
    private String username;
    private String email;
@@ -54,6 +59,10 @@ public class SignupController implements Serializable
       Group users = BasicModel.getGroup(identityManager, "users");
       RelationshipManager relationshipManager = partitionManager.createRelationshipManager();
       BasicModel.addToGroup(relationshipManager, user, users);
+
+      UserProfile profile = new UserProfile();
+      profile.setUsername(username);
+      em.persist(profile);
 
       FacesMessages.addInfo(FacesContext.getCurrentInstance(), "Account created. You are now ready to get Redoculous!");
 

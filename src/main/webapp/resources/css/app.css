@@ -1,0 +1,26 @@
+body.form {
+	background: #F3F5F8;
+}
+
+body.form #main {
+	padding: 120px 0 100px;
+	margin: 0;
+}
+
+body.form #main h1 {
+	margin-bottom: 50px;
+}
+
+body.form #main label {
+	margin-top: 0;
+}
+
+body.form #main input {
+	border-radius: 0;
+	border: 0;
+	padding: .8em 14px;
+	box-shadow: none;
+	border: 0;
+	margin-bottom: 20px;
+	background: #fff;
+}

@@ -9,13 +9,13 @@ package org.ocpsoft.redoculous.io.model.repositories;
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-public enum VCSType
+public enum SourceRepositoryType
 {
    GIT("Git"), SVN("Subversion"), HG("Mercurial");
 
    private String name;
 
-   private VCSType(String name)
+   private SourceRepositoryType(String name)
    {
       this.name = name;
    }

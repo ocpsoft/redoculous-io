@@ -4,7 +4,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
+import org.ocpsoft.redoculous.io.model.account.UserProfile;
+import org.picketlink.annotations.PicketLink;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.RelationshipManager;
@@ -15,11 +18,15 @@ import org.picketlink.idm.model.basic.User;
 
 @Startup
 @Singleton
-public class IDMInitializer
+public class DatabaseInitializer
 {
 
    @Inject
    private PartitionManager partitionManager;
+
+   @Inject
+   @PicketLink
+   private EntityManager em;
 
    @PostConstruct
    public void create()
@@ -41,5 +48,9 @@ public class IDMInitializer
       RelationshipManager relationshipManager = this.partitionManager.createRelationshipManager();
       BasicModel.addToGroup(relationshipManager, lincoln, users);
       BasicModel.addToGroup(relationshipManager, lincoln, administrators);
+
+      UserProfile profile = new UserProfile();
+      profile.setUsername(lincoln.getLoginName());
+      em.persist(profile);
    }
 }
