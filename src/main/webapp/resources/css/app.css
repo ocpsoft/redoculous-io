@@ -15,7 +15,7 @@ body.form #main label {
 	margin-top: 0;
 }
 
-body.form #main input {
+body.form #main input[type=text] {
 	border-radius: 0;
 	border: 0;
 	padding: .8em 14px;
