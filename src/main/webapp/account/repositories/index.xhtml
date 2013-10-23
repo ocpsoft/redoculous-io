@@ -13,7 +13,6 @@
 				<h1>Repositories</h1>
 			</div>
 			<div class="row">
-
 				<ui:fragment rendered="#{empty profile.repositories}">
 					<p>You have not added any repositories.</p>
 				</ui:fragment>
@@ -23,15 +22,15 @@
 							<tr>
 								<th>Name</th>
 								<th>Repository URL</th>
-								<th>Owner</th>
+								<th>API Key</th>
 							</tr>
 						</thead>
 						<tbody>
 							<ui:repeat var="r" value="#{profile.repositories.toArray()}">
-								<tr>
+								<tr class="clickable" data-href="view?r=#{r.url}">
 									<td>#{r.name}</td>
 									<td>#{r.url}</td>
-									<td>#{r.owner.username}</td>
+									<td>#{r.apiKey}</td>
 								</tr>
 							</ui:repeat>
 						</tbody>

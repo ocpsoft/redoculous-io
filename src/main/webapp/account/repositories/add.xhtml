@@ -14,19 +14,27 @@
 			</div>
 			<div class="row">
 				<h:form id="form" styleClass="bs-docs-example form-horizontal">
+					<div class="all-errors">
+						<h:messages
+							style="list-style-type: none; margin: 0px; padding: 0px;"
+							globalOnly="false" errorClass="alert alert-error"
+							infoClass="alert alert-info" warnClass="alert" />
+					</div>
 
 					<div class="control-group">
 						<label class="control-label" for="form:name">Name</label>
 						<div class="controls">
 							<h:inputText styleClass="focus" type="text" id="name"
-								value="#{repositoryController.repository.name}" />
+								value="#{repositoryController.repository.name}"
+								validator="#{repositoryController.validateName}" />
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" for="form:url">URL</label>
 						<div class="controls">
 							<h:inputText styleClass="focus" type="text" id="url"
-								value="#{repositoryController.repository.url}" />
+								value="#{repositoryController.repository.url}"
+								validator="#{repositoryController.validateUrl}" />
 						</div>
 					</div>
 					<div class="control-group">
