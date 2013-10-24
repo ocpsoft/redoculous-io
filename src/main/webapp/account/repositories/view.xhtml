@@ -10,51 +10,71 @@
 	<ui:define name="main">
 		<div class="container">
 			<div class="row">
-				<h1>#{repositoryController.repoUrl}</h1>
+				<div>
+					<h1>#{repositoryController.repository.name}</h1>
+				</div>
 			</div>
 			<div class="row">
-				<h:form id="form" styleClass="bs-docs-example form-horizontal">
-					<div class="all-errors">
-						<h:messages
-							style="list-style-type: none; margin: 0px; padding: 0px;"
-							globalOnly="false" errorClass="alert alert-error"
-							infoClass="alert alert-info" warnClass="alert" />
-					</div>
+				<div class="span8 cols">
+					<h:form id="form">
+						<div class="all-errors">
+							<h:messages
+								style="list-style-type: none; margin: 0px; padding: 0px;"
+								globalOnly="false" errorClass="alert alert-error"
+								infoClass="alert alert-info" warnClass="alert" />
+						</div>
 
-					<div class="control-group">
-						<label class="control-label" for="form:name">Name</label>
-						<div class="controls">
-							<h:inputText type="text" id="name" required="true"
-								value="#{repositoryController.repository.name}"
-								validator="#{repositoryController.validateName}" />
+						<div class="control-group">
+							<label class="control-label" for="form:name">Name</label>
+							<div class="controls">
+								<h:inputText type="text" id="name" required="true"
+									value="#{repositoryController.repository.name}"
+									validator="#{repositoryController.validateName}"
+									styleClass="clickable" />
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="form:url">URL</label>
-						<div class="controls">
-							<h:inputText type="text" id="url" required="true"
-								value="#{repositoryController.repository.url}"
-								validator="#{repositoryController.validateUrl}" />
+						<div class="control-group">
+							<label class="control-label" for="form:url">URL</label>
+							<div class="controls">
+								<h:inputText type="text" id="url" required="true"
+									value="#{repositoryController.repository.url}"
+									validator="#{repositoryController.validateUrl}"
+									styleClass="clickable" />
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="form:apikey">API Key</label>
-						<div class="controls">
-							<h:inputText type="text" id="apikey"
-								value="#{repositoryController.repository.apiKey}"
-								disabled="true" />
+						<div class="control-group">
+							<label class="control-label" for="form:apikey">API Key</label>
+							<div class="controls">
+								<h:inputText type="text" id="apikey"
+									value="#{repositoryController.repository.apiKey}"
+									disabled="true" />
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
+						<div class="form-actions">
 							<h:commandButton type="submit" styleClass="btn btn-primary"
 								value="Save repository" action="#{repositoryController.save}" />
 							<h:commandButton type="submit" styleClass="btn"
-								value="Reset API Key" action="#{repositoryController.regenerateApiKey}" />
+								value="Reset API Key"
+								action="#{repositoryController.regenerateApiKey}" />
+						</div>
+					</h:form>
+				</div>
+				<div id="sidebar" class="span4 cols">
+					<div class="control-group">
+						<label class="control-label">Created:</label>
+						<div class="controls">
+							<h:outputText
+								value="#{repositoryController.repository.createdOn}" />
 						</div>
 					</div>
-
-				</h:form>
+					<div class="control-group">
+						<label class="control-label">Last Updated:</label>
+						<div class="controls">
+							<h:outputText
+								value="#{repositoryController.repository.lastUpdate}" />
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</ui:define>

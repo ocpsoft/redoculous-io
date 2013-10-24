@@ -78,7 +78,7 @@ public class RepositoryController implements Serializable
    public Object save()
    {
       em.merge(repository);
-      return Navigate.to("/account/repositories/view").with("repo", repoUrl);
+      return Navigate.to("/account/repositories/view").with("repo", repository.getUrl());
    }
 
    public void validateNewName(FacesContext context, UIComponent component, Object value)
