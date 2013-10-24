@@ -3,14 +3,21 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
+<f:metadata>
+	<f:viewParam name="repo" value="#{repositoryController.repoUrl}"
+		required="true" />
+	<f:event type="preRenderView"
+		listener="#{repositoryController.loadRepo}" />
+</f:metadata>
+
 <ui:composition template="/WEB-INF/templates/site.xhtml">
 
-	<ui:param name="bodyClasses" value="form" />
+	<ui:param name="bodyClasses" value="login" />
 
 	<ui:define name="main">
 		<div class="container">
 			<div class="row">
-				<h1>Add a Repository</h1>
+				<h1>#{repositoryController.repoUrl}</h1>
 			</div>
 			<div class="row">
 				<h:form id="form" styleClass="bs-docs-example form-horizontal">
@@ -26,7 +33,7 @@
 						<div class="controls">
 							<h:inputText styleClass="focus" type="text" id="name"
 								required="true" value="#{repositoryController.repository.name}"
-								validator="#{repositoryController.validateNewName}" />
+								validator="#{repositoryController.validateName}" />
 						</div>
 					</div>
 					<div class="control-group">
@@ -34,29 +41,17 @@
 						<div class="controls">
 							<h:inputText styleClass="focus" type="text" id="url"
 								required="true" value="#{repositoryController.repository.url}"
-								validator="#{repositoryController.validateNewUrl}" />
+								validator="#{repositoryController.validateUrl}" />
 						</div>
 					</div>
 					<div class="control-group">
 						<div class="controls">
 							<h:commandButton type="submit" styleClass="btn btn-primary"
-								value="Add repository" action="#{repositoryController.add}" />
+								value="Save repository" action="#{repositoryController.save}" />
 						</div>
 					</div>
 
 				</h:form>
-
-				<div></div>
-
-				<script type="text/javascript">
-					$(document).ready(
-							function() {
-								$('#form\\:name').attr("placeholder",
-										"repository name").focus();
-								$('#form\\:url').attr("placeholder",
-										"repository URL").focus();
-							});
-				</script>
 			</div>
 		</div>
 	</ui:define>

@@ -27,7 +27,7 @@
 						</thead>
 						<tbody>
 							<ui:repeat var="r" value="#{profile.repositories.toArray()}">
-								<tr class="clickable" data-href="view?r=#{r.url}">
+								<tr class="clickable" data-href="view?repo=#{r.url}">
 									<td>#{r.name}</td>
 									<td>#{r.url}</td>
 									<td>#{r.apiKey}</td>

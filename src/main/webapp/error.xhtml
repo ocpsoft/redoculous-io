@@ -8,7 +8,7 @@
 
 	<ui:define name="main">
 		<div class="container">
-			<ui:fragment rendered="#{request.domain eq 'localhost'}">
+			<ui:fragment rendered="#{request.serverName eq 'localhost'}">
 				<h1>#{requestScope['javax.servlet.error.message']}</h1>
 				<pre>#{facesMessages.dump(requestScope['javax.servlet.error.exception'])}</pre>
 			</ui:fragment>
