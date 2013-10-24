@@ -3,13 +3,6 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<f:metadata>
-	<f:viewParam name="repo" value="#{repositoryController.repoUrl}"
-		required="true" />
-	<f:event type="preRenderView"
-		listener="#{repositoryController.loadRepo}" />
-</f:metadata>
-
 <ui:composition template="/WEB-INF/templates/site.xhtml">
 
 	<ui:param name="bodyClasses" value="login" />
@@ -31,23 +24,33 @@
 					<div class="control-group">
 						<label class="control-label" for="form:name">Name</label>
 						<div class="controls">
-							<h:inputText styleClass="focus" type="text" id="name"
-								required="true" value="#{repositoryController.repository.name}"
+							<h:inputText type="text" id="name" required="true"
+								value="#{repositoryController.repository.name}"
 								validator="#{repositoryController.validateName}" />
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" for="form:url">URL</label>
 						<div class="controls">
-							<h:inputText styleClass="focus" type="text" id="url"
-								required="true" value="#{repositoryController.repository.url}"
+							<h:inputText type="text" id="url" required="true"
+								value="#{repositoryController.repository.url}"
 								validator="#{repositoryController.validateUrl}" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="form:apikey">API Key</label>
+						<div class="controls">
+							<h:inputText type="text" id="apikey"
+								value="#{repositoryController.repository.apiKey}"
+								disabled="true" />
 						</div>
 					</div>
 					<div class="control-group">
 						<div class="controls">
 							<h:commandButton type="submit" styleClass="btn btn-primary"
 								value="Save repository" action="#{repositoryController.save}" />
+							<h:commandButton type="submit" styleClass="btn"
+								value="Reset API Key" action="#{repositoryController.regenerateApiKey}" />
 						</div>
 					</div>
 

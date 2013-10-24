@@ -15,18 +15,20 @@ import javax.persistence.EntityManager;
 import org.ocpsoft.redoculous.io.model.account.UserProfile;
 import org.ocpsoft.redoculous.io.model.repositories.SourceRepository;
 import org.ocpsoft.redoculous.io.util.jsf.FacesMessages;
+import org.ocpsoft.redoculous.io.util.jsf.FacesUtils;
+import org.ocpsoft.rewrite.annotation.Parameter;
+import org.ocpsoft.rewrite.annotation.PathPattern;
+import org.ocpsoft.rewrite.annotation.RequestAction;
+import org.ocpsoft.rewrite.faces.annotation.Deferred;
 import org.ocpsoft.rewrite.faces.navigate.Navigate;
 
 @Named
 @Stateful
 @RequestScoped
+@PathPattern("/account/repositories/view")
 public class RepositoryController implements Serializable
 {
    private static final long serialVersionUID = -2583174292087675121L;
-
-   private String repoUrl;
-
-   private SourceRepository repository = new SourceRepository();
 
    @Inject
    private EntityManager em;
@@ -34,24 +36,14 @@ public class RepositoryController implements Serializable
    @Inject
    private UserProfile profile;
 
-   public Object add()
-   {
-      repository.setApiKey(UUID.randomUUID().toString());
-      repository.setOwner(null);
-      profile.getRepositories().add(repository);
-      repository.setOwner(profile);
+   @Deferred
+   @Parameter("repo")
+   private String repoUrl;
 
-      em.persist(repository);
-      em.merge(profile);
-      return Navigate.to("/account/repositories");
-   }
+   private SourceRepository repository = new SourceRepository();
 
-   public Object save()
-   {
-      em.merge(repository);
-      return Navigate.to("/account/repositories/view").with("repo", repoUrl);
-   }
-
+   @Deferred
+   @RequestAction
    public void loadRepo()
    {
       for (SourceRepository repo : profile.getRepositories()) {
@@ -63,8 +55,30 @@ public class RepositoryController implements Serializable
       }
 
       if (!repository.isPersistent())
-         FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
-                  .handleNavigation(FacesContext.getCurrentInstance(), "", "/404");
+         FacesUtils.send404();
+   }
+
+   public void regenerateApiKey()
+   {
+      repository.setApiKey(UUID.randomUUID().toString());
+      em.merge(repository);
+   }
+
+   public Object add()
+   {
+      repository.setApiKey(UUID.randomUUID().toString());
+      repository.setOwner(null);
+      profile.getRepositories().add(repository);
+      repository.setOwner(profile);
+
+      em.persist(repository);
+      return Navigate.to("/account/repositories");
+   }
+
+   public Object save()
+   {
+      em.merge(repository);
+      return Navigate.to("/account/repositories/view").with("repo", repoUrl);
    }
 
    public void validateNewName(FacesContext context, UIComponent component, Object value)
