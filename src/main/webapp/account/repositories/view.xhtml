@@ -55,7 +55,9 @@
 								value="Save repository" action="#{repositoryController.save}" />
 							<h:commandButton type="submit" styleClass="btn"
 								value="Reset API Key"
-								action="#{repositoryController.regenerateApiKey}" />
+								action="#{repositoryController.regenerateApiKey}">
+								<f:ajax execute="apikey @this" render="apikey" />
+							</h:commandButton>
 						</div>
 					</h:form>
 				</div>
