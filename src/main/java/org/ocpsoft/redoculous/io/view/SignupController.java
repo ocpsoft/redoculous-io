@@ -102,13 +102,6 @@ public class SignupController implements Serializable
             Threads.sleep(VALIDATION_FAILURE_DELAY);
             throw new ValidatorException(FacesMessages.error("Email address is already associated with an account."));
          }
-
-         if (!((String) value).matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                  + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"))
-         {
-            Threads.sleep(VALIDATION_FAILURE_DELAY);
-            throw new ValidatorException(FacesMessages.error("Email address is not valid."));
-         }
       }
    }
 
