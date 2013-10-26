@@ -7,6 +7,7 @@
 package org.ocpsoft.redoculous.io.core;
 
 import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -25,6 +26,7 @@ public class SettingsProducer
 
    @Produces
    @Named("settings")
+   @RequestScoped
    public Settings produceSettings()
    {
       return em.createQuery("FROM Settings ORDER BY id DESC", Settings.class).setMaxResults(1).getSingleResult();

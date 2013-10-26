@@ -7,7 +7,74 @@
 	<ui:param name="bodyClasses" value="login" />
 
 	<ui:define name="main">
-		Redoculous Server: #{settings.redoculousURL}
+		<div class="container">
+			<div class="row">
+				<div>
+					<h1>Settings</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span8 cols">
+					<h:form id="form">
+						<div class="all-errors">
+							<h:messages
+								style="list-style-type: none; margin: 0px; padding: 0px;"
+								globalOnly="false" errorClass="alert alert-error"
+								infoClass="alert alert-info" warnClass="alert" />
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="form:name">Redoculous
+								URL</label>
+							<div class="controls">
+								<h:inputText type="text" id="name" required="true"
+									value="#{settings.redoculousURL}" styleClass="clickable" />
+							</div>
+						</div>
+						<div class="form-actions">
+							<h:commandButton type="submit" styleClass="btn btn-primary"
+								value="Update settings" action="#{adminController.save}" />
+						</div>
+					</h:form>
+				</div>
+				<div id="sidebar" class="span4 cols">
+					<div class="control-group">
+						<label class="control-label">Last Updated:</label>
+						<div class="controls">
+							<h:outputText value="#{settings.createdOn}" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Last Updated By:</label>
+						<div class="controls">
+							<h:outputText value="#{settings.lastUpdatedBy.username}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12 cols">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Redoculous URL</th>
+								<th>Last Updated By</th>
+								<th>Last Updated</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ui:repeat var="s" value="#{adminController.settingsHistory}">
+								<tr>
+									<td>#{s.redoculousURL}</td>
+									<td>#{s.lastUpdatedBy.username}</td>
+									<td>#{s.createdOn}</td>
+								</tr>
+							</ui:repeat>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</ui:define>
 
 	<ui:define name="footer"></ui:define>

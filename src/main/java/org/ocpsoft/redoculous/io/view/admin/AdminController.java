@@ -1,6 +1,7 @@
 package org.ocpsoft.redoculous.io.view.admin;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
@@ -11,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
+import org.ocpsoft.redoculous.io.model.account.UserProfile;
 import org.ocpsoft.redoculous.io.model.admin.Settings;
 import org.ocpsoft.redoculous.io.util.jsf.FacesMessages;
 import org.ocpsoft.rewrite.faces.navigate.Navigate;
@@ -26,12 +28,30 @@ public class AdminController implements Serializable
    private EntityManager em;
 
    @Inject
+   @Named
    private Settings settings;
+
+   @Inject
+   private UserProfile profile;
+
+   private List<Settings> settingsHistory;
 
    public Object save()
    {
-      em.merge(settings);
+      Settings updated = new Settings();
+      updated.setLastUpdatedBy(profile);
+      updated.setRedoculousURL(settings.getRedoculousURL());
+      em.persist(updated);
       return Navigate.to("/admin");
+   }
+
+   public List<Settings> getSettingsHistory()
+   {
+      if (settingsHistory == null)
+      {
+         settingsHistory = em.createQuery("FROM Settings ORDER BY id DESC", Settings.class).getResultList();
+      }
+      return settingsHistory;
    }
 
    public void validateNewUrl(FacesContext context, UIComponent component, Object value)
