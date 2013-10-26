@@ -48,14 +48,14 @@
 			<div class="span6">
 				<h:form id="auth-form">
 					<div class="all-errors">
-						<h:messages
+						<h:messages id="formmsg"
 							style="list-style-type: none; margin: 0px; padding: 0px;"
 							globalOnly="false" errorClass="alert alert-error"
 							infoClass="alert alert-info" warnClass="alert" />
 					</div>
 					<div class="input">
 						<h:inputText id="username" value="#{signupController.username}"
-							validator="#{signupController.validateUsername}" />
+							validator="#{signupController.validateUsername}" styleClass="focus" />
 					</div>
 					<div class="input">
 						<h:inputText id="email" value="#{signupController.email}"
@@ -65,15 +65,15 @@
 					</div>
 					<div class="input">
 						<h:inputSecret id="password" value="#{signupController.password}"
-							redisplay="true" validator="#{signupController.validatePassword}" />
+							redisplay="false" validator="#{signupController.validatePassword}" />
 					</div>
 					
 					
 					<script type="text/javascript">
 						$(document).ready(function() {
-							$('#auth-form\\:username').attr("placeholder", "Your username").focus();
-							$('#auth-form\\:email').attr("placeholder", "Your email address").focus();
-							$('#auth-form\\:password').attr("placeholder", "Your password").focus();
+							$('#auth-form\\:username').attr("placeholder", "Your username");
+							$('#auth-form\\:email').attr("placeholder", "Your email address");
+							$('#auth-form\\:password').attr("placeholder", "Your password");
 						});
 					</script>
 					

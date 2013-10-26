@@ -6,6 +6,8 @@
    
    <lifecycle>
       <phase-listener>org.ocpsoft.redoculous.io.util.jsf.MultiPageMessagesSupport</phase-listener>
+      <phase-listener>org.ocpsoft.redoculous.io.util.jsf.InvalidFieldHighlightListener</phase-listener>
+      <phase-listener>org.ocpsoft.redoculous.io.util.jsf.CacheControlPhaseListener</phase-listener>
    </lifecycle>
    
 </faces-config>
