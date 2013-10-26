@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.ocpsoft.redoculous.io.model.account.UserProfile;
+import org.ocpsoft.redoculous.io.model.admin.Settings;
 import org.picketlink.annotations.PicketLink;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
@@ -49,8 +50,15 @@ public class DatabaseInitializer
       BasicModel.addToGroup(relationshipManager, lincoln, users);
       BasicModel.addToGroup(relationshipManager, lincoln, administrators);
 
+      /**
+       * Business Logic Setup
+       */
       UserProfile profile = new UserProfile();
       profile.setUsername(lincoln.getLoginName());
       em.persist(profile);
+
+      Settings settings = new Settings();
+      settings.setRedoculousURL("http://localhost:8080/redoculous-server");
+      em.persist(settings);
    }
 }
