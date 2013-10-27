@@ -72,7 +72,7 @@ public class RepositoryController implements Serializable
       repository.setOwner(profile);
 
       em.persist(repository);
-      return Navigate.to("/account/repositories");
+      return Navigate.to("/account/repositories/view").with("repo", repository.getUrl());
    }
 
    public Object save()

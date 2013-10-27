@@ -43,6 +43,14 @@ public class SecurityConfiguration extends HttpConfigurationProvider
                .addRule()
                .when(Path.matches("/admin/{*}"))
                .perform(Subset.evaluate(ConfigurationBuilder.begin()
+
+                        .addRule()
+                        .when(Not.any(administrator).andNot(AuthenticationStatus.isLoggedIn(identity)))
+                        .perform(Redirect.temporary(context.getContextPath() + "/login?" +
+                                 LoginController.RETURN_TO_PARAM + "={url}")
+                        )
+                        .where("url").bindsTo(requestedPath)
+
                         .addRule()
                         .when(Not.any(administrator))
                         .perform(Response.setStatus(401).and(Forward.to("/401"))))
