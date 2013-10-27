@@ -12,10 +12,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
+import org.ocpsoft.redoculous.io.core.RepositoryOperations;
 import org.ocpsoft.redoculous.io.model.account.UserProfile;
 import org.ocpsoft.redoculous.io.model.repositories.SourceRepository;
 import org.ocpsoft.redoculous.io.util.jsf.FacesMessages;
 import org.ocpsoft.redoculous.io.util.jsf.FacesUtils;
+import org.ocpsoft.redoculous.rest.model.RepositoryStatus;
 import org.ocpsoft.rewrite.annotation.Parameter;
 import org.ocpsoft.rewrite.annotation.PathPattern;
 import org.ocpsoft.rewrite.annotation.RequestAction;
@@ -42,6 +44,11 @@ public class RepositoryController implements Serializable
 
    private SourceRepository repository = new SourceRepository();
 
+   private RepositoryStatus repositoryStatus = new RepositoryStatus();
+
+   @Inject
+   private RepositoryOperations operations;
+
    @Deferred
    @RequestAction
    public void loadRepo()
@@ -56,6 +63,8 @@ public class RepositoryController implements Serializable
 
       if (!repository.isPersistent())
          FacesUtils.send404();
+      else
+         repositoryStatus = operations.getStatus(repository.getUrl());
    }
 
    public void regenerateApiKey()
@@ -70,8 +79,10 @@ public class RepositoryController implements Serializable
       repository.setOwner(null);
       profile.getRepositories().add(repository);
       repository.setOwner(profile);
-
       em.persist(repository);
+
+      operations.initializeRepository(repository.getUrl());
+
       return Navigate.to("/account/repositories/view").with("repo", repository.getUrl());
    }
 
@@ -139,6 +150,16 @@ public class RepositoryController implements Serializable
    public void setRepository(SourceRepository repository)
    {
       this.repository = repository;
+   }
+
+   public RepositoryStatus getRepositoryStatus()
+   {
+      return repositoryStatus;
+   }
+
+   public void setRepositoryStatus(RepositoryStatus repositoryStatus)
+   {
+      this.repositoryStatus = repositoryStatus;
    }
 
    public String getRepoUrl()

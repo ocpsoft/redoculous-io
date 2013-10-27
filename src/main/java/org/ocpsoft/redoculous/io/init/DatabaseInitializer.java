@@ -58,7 +58,7 @@ public class DatabaseInitializer
       em.persist(profile);
 
       Settings settings = new Settings();
-      settings.setRedoculousURL("http://localhost:8080/redoculous-server");
+      settings.setRedoculousURL("http://localhost:8080/redoculous-server/api");
       em.persist(settings);
    }
 }

@@ -63,6 +63,13 @@
 				</div>
 				<div id="sidebar" class="span4 cols">
 					<div class="control-group">
+						<label class="control-label">Status:</label>
+						<div class="controls">
+							<h:outputText
+								value="#{repositoryController.repositoryStatus.state}" />
+						</div>
+					</div>
+					<div class="control-group">
 						<label class="control-label">Created:</label>
 						<div class="controls">
 							<h:outputText
