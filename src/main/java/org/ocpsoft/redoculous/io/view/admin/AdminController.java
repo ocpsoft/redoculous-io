@@ -48,6 +48,13 @@ public class AdminController implements Serializable
       return Navigate.to("/admin");
    }
 
+   public int getConnectionStatus(String url)
+   {
+      StatusService client = ProxyFactory.create(StatusService.class, url);
+      Response response = client.status();
+      return response.getStatus();
+   }
+
    public List<Settings> getSettingsHistory()
    {
       if (settingsHistory == null)
@@ -61,12 +68,11 @@ public class AdminController implements Serializable
    {
       if (value instanceof String)
       {
-         StatusService client = ProxyFactory.create(StatusService.class, (String) value);
-         Response response = client.status();
-         if (response.getStatus() != 200)
+         int status = getConnectionStatus((String) value);
+         if (status != 200)
          {
             throw new ValidatorException(
-                     FacesMessages.error("Redoculous server could not be contacted. Status: " + response.getStatus()));
+                     FacesMessages.error("Connection failed - Status: " + status));
          }
       }
    }
