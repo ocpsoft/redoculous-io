@@ -28,7 +28,8 @@
 								URL</label>
 							<div class="controls">
 								<h:inputText type="text" id="name" required="true"
-									value="#{settings.redoculousURL}" styleClass="clickable" />
+									value="#{settings.redoculousURL}" styleClass="clickable"
+									validator="#{adminController.validateNewUrl}" />
 							</div>
 						</div>
 						<div class="form-actions">

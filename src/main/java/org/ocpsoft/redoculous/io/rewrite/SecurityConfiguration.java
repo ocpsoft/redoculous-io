@@ -14,10 +14,11 @@ import org.ocpsoft.rewrite.config.Not;
 import org.ocpsoft.rewrite.config.Subset;
 import org.ocpsoft.rewrite.context.EvaluationContext;
 import org.ocpsoft.rewrite.event.Rewrite;
+import org.ocpsoft.rewrite.servlet.config.Forward;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
 import org.ocpsoft.rewrite.servlet.config.Path;
 import org.ocpsoft.rewrite.servlet.config.Redirect;
-import org.ocpsoft.rewrite.servlet.config.SendStatus;
+import org.ocpsoft.rewrite.servlet.config.Response;
 import org.ocpsoft.rewrite.servlet.http.event.HttpServletRewrite;
 import org.picketlink.Identity;
 
@@ -44,7 +45,7 @@ public class SecurityConfiguration extends HttpConfigurationProvider
                .perform(Subset.evaluate(ConfigurationBuilder.begin()
                         .addRule()
                         .when(Not.any(administrator))
-                        .perform(SendStatus.code(401)))
+                        .perform(Response.setStatus(401).and(Forward.to("/401"))))
                )
 
                /*

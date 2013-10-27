@@ -11,10 +11,13 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.ws.rs.core.Response;
 
+import org.jboss.resteasy.client.ProxyFactory;
 import org.ocpsoft.redoculous.io.model.account.UserProfile;
 import org.ocpsoft.redoculous.io.model.admin.Settings;
 import org.ocpsoft.redoculous.io.util.jsf.FacesMessages;
+import org.ocpsoft.redoculous.rest.StatusService;
 import org.ocpsoft.rewrite.faces.navigate.Navigate;
 
 @Named
@@ -58,8 +61,13 @@ public class AdminController implements Serializable
    {
       if (value instanceof String)
       {
-         throw new ValidatorException(
-                  FacesMessages.error("Redoculous server could not be contacted."));
+         StatusService client = ProxyFactory.create(StatusService.class, (String) value);
+         Response response = client.status();
+         if (response.getStatus() != 200)
+         {
+            throw new ValidatorException(
+                     FacesMessages.error("Redoculous server could not be contacted. Status: " + response.getStatus()));
+         }
       }
    }
 

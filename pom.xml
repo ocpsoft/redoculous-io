@@ -12,6 +12,7 @@
       <version.deltaspike>0.5</version.deltaspike>
       <version.picketlink>2.5.2.Final</version.picketlink>
       <version.rewrite>2.0.8.Final</version.rewrite>
+      <version.resteasy.client>2.3.5.Final</version.resteasy.client>
    </properties>
 
    <dependencyManagement>
@@ -38,6 +39,11 @@
             <artifactId>rewrite-integration-faces</artifactId>
             <version>${version.rewrite}</version>
          </dependency>
+         <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>${version.resteasy.client}</version>
+         </dependency>
       </dependencies>
    </dependencyManagement>
 
@@ -53,6 +59,17 @@
       <dependency>
          <groupId>org.ocpsoft.rewrite</groupId>
          <artifactId>rewrite-integration-faces</artifactId>
+      </dependency>
+
+      <!-- Import the RESTeasy client API -->
+      <dependency>
+         <groupId>org.jboss.resteasy</groupId>
+         <artifactId>resteasy-jaxrs</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.ocpsoft.redoculous</groupId>
+         <artifactId>redoculous-server-api</artifactId>
+         <version>1.0.0-SNAPSHOT</version>
       </dependency>
 
       <!-- Import the PicketLink API, we deploy this as library with the application, and can compile against it -->
