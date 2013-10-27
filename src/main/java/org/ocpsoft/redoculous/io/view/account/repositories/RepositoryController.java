@@ -7,6 +7,7 @@ import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -81,9 +82,14 @@ public class RepositoryController implements Serializable
       repository.setOwner(profile);
       em.persist(repository);
 
-      operations.initializeRepository(repository.getUrl());
+      initialize(repository.getUrl());
 
       return Navigate.to("/account/repositories/view").with("repo", repository.getUrl());
+   }
+
+   public void initialize(String url)
+   {
+      operations.initializeRepository(url);
    }
 
    public Object save()
@@ -140,7 +146,21 @@ public class RepositoryController implements Serializable
    }
 
    public void validateUrl(FacesContext context, UIComponent component, Object value)
-   {}
+   {
+      if (value instanceof String)
+      {
+         if (!repository.getUrl().trim().equals(((String) value).trim()))
+         {
+            validateNewUrl(context, component, value);
+         }
+      }
+   }
+
+   public void repositoryUrlChanged(ValueChangeEvent e)
+   {
+      operations.purgeRepository((String) e.getOldValue());
+      operations.initializeRepository((String) e.getNewValue());
+   }
 
    public SourceRepository getRepository()
    {

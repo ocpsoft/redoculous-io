@@ -38,7 +38,7 @@ public class RepositoryOperations
    {
       ManagementService client = ProxyFactory.create(ManagementService.class, settings.getRedoculousURL());
       RepositoryStatus status = getStatus(url);
-      if (State.MISSING.equals(status.getState()))
+      if (State.MISSING.equals(status.getState()) || State.ERROR.equals(status.getState()))
       {
          // TODO How can I make repositories unique per user, so that users can't blow away each other's repos?
          return new AsyncResult<Response>(client.init(url));
@@ -51,5 +51,13 @@ public class RepositoryOperations
    {
       ManagementService client = ProxyFactory.create(ManagementService.class, settings.getRedoculousURL());
       return client.status(url);
+   }
+
+   @Asynchronous
+   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+   public void purgeRepository(String url)
+   {
+      ManagementService client = ProxyFactory.create(ManagementService.class, settings.getRedoculousURL());
+      client.purgeRepository(url);
    }
 }

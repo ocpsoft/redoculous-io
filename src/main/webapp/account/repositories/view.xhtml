@@ -39,6 +39,7 @@
 								<h:inputText type="text" id="url" required="true"
 									value="#{repositoryController.repository.url}"
 									validator="#{repositoryController.validateUrl}"
+									valueChangeListener="#{repositoryController.repositoryUrlChanged}"
 									styleClass="clickable" />
 							</div>
 						</div>
@@ -53,10 +54,19 @@
 						<div class="form-actions">
 							<h:commandButton type="submit" styleClass="btn btn-primary"
 								value="Save repository" action="#{repositoryController.save}" />
+
 							<h:commandButton type="submit" styleClass="btn"
 								value="Reset API Key"
 								action="#{repositoryController.regenerateApiKey}">
 								<f:ajax execute="apikey @this" render="apikey" />
+							</h:commandButton>
+
+
+							<h:commandButton type="submit" styleClass="btn"
+								value="Retry Initialization"
+								rendered="#{repositoryController.repositoryStatus.state eq 'ERROR'}"
+								action="#{repositoryController.initialize(repositoryController.repository.url)}">
+								<f:ajax execute="@this" render="@this :status :statusMessage" />
 							</h:commandButton>
 						</div>
 					</h:form>
@@ -65,8 +75,15 @@
 					<div class="control-group">
 						<label class="control-label">Status:</label>
 						<div class="controls">
-							<h:outputText
+							<h:outputText id="status"
 								value="#{repositoryController.repositoryStatus.state}" />
+							<ui:fragment
+								rendered="#{repositoryController.repositoryStatus.state eq 'ERROR'}">
+								<div class="small" style="color: red;">
+									<h:outputText id="statusMessage"
+										value="#{repositoryController.repositoryStatus.message}"></h:outputText>
+								</div>
+							</ui:fragment>
 						</div>
 					</div>
 					<div class="control-group">
