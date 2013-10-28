@@ -1,7 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://java.sun.com/jsf/composite/tags">
 
 <ui:composition template="/WEB-INF/templates/site.xhtml">
 
@@ -43,10 +44,9 @@
 					<div class="control-group">
 						<label class="control-label">Connection Status:</label>
 						<div class="controls">
-							<h:form>
-								<h:outputText id="status"
-									value="#{adminController.getConnectionStatus(settings.redoculousURL)}" />
-							</h:form>
+							<t:poll interval="10000" timeout="120000" render="status" />
+							<h:outputText id="status"
+								value="#{adminController.getConnectionStatus(settings.redoculousURL)}" />
 						</div>
 					</div>
 					<div class="control-group">

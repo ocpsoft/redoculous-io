@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+	<composite:attribute name="interval" required="true" />
+	<composite:attribute name="timeout" required="true" />
+	<composite:attribute name="render" required="true" />
+</composite:interface>
+
+<composite:implementation>
+	<span id="#{cc.clientId}"> <h:outputScript name="jsf.js"
+			library="javax.faces" target="head" /> <h:outputScript
+			name="tags/poll.js" target="head" />
+	</span>
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		jsf.ajax.addOnError(redoculoustags.poll.init("#{cc.clientId}",
+				"#{cc.attrs.interval}", "#{cc.attrs.timeout}",
+				"#{cc.attrs.render}"));
+		/* ]]> */
+	</script>
+</composite:implementation>
+
+</html>

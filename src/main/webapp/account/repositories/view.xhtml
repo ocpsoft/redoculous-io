@@ -1,7 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://java.sun.com/jsf/composite/tags">
 
 <ui:composition template="/WEB-INF/templates/site.xhtml">
 
@@ -52,22 +53,24 @@
 							</div>
 						</div>
 						<div class="form-actions">
-							<h:commandButton type="submit" styleClass="btn btn-primary"
-								value="Save repository" action="#{repositoryController.save}" />
+							<h:panelGroup id="actions">
+								<h:commandButton type="submit" styleClass="btn btn-primary"
+									value="Save repository" action="#{repositoryController.save}" />
 
-							<h:commandButton type="submit" styleClass="btn"
-								value="Reset API Key"
-								action="#{repositoryController.regenerateApiKey}">
-								<f:ajax execute="apikey @this" render="apikey" />
-							</h:commandButton>
+								<h:commandButton type="submit" styleClass="btn"
+									value="Reset API Key"
+									action="#{repositoryController.regenerateApiKey}">
+									<f:ajax execute="apikey @this" render="apikey" />
+								</h:commandButton>
 
 
-							<h:commandButton type="submit" styleClass="btn"
-								value="Retry Initialization"
-								rendered="#{repositoryController.repositoryStatus.state eq 'ERROR'}"
-								action="#{repositoryController.initialize(repositoryController.repository.url)}">
-								<f:ajax execute="@this" render="@this :status :statusMessage" />
-							</h:commandButton>
+								<h:commandButton type="submit" styleClass="btn"
+									value="Retry Initialization"
+									rendered="#{repositoryController.repositoryStatus.state eq 'ERROR'}"
+									action="#{repositoryController.initialize(repositoryController.repository.url)}">
+									<f:ajax execute="@this" render="@this :status" />
+								</h:commandButton>
+							</h:panelGroup>
 						</div>
 					</h:form>
 				</div>
@@ -75,15 +78,18 @@
 					<div class="control-group">
 						<label class="control-label">Status:</label>
 						<div class="controls">
-							<h:outputText id="status"
-								value="#{repositoryController.repositoryStatus.state}" />
-							<ui:fragment
-								rendered="#{repositoryController.repositoryStatus.state eq 'ERROR'}">
-								<div class="small" style="color: red;">
-									<h:outputText id="statusMessage"
-										value="#{repositoryController.repositoryStatus.message}"></h:outputText>
-								</div>
-							</ui:fragment>
+							<t:poll interval="10000" timeout="120000" render="form:actions status" />
+							<h:panelGroup id="status">
+								<h:outputText
+									value="#{repositoryController.repositoryStatus.state}" />
+								<ui:fragment
+									rendered="#{repositoryController.repositoryStatus.state eq 'ERROR'}">
+									<div class="small" style="color: red;">
+										<h:outputText
+											value="#{repositoryController.repositoryStatus.message}"></h:outputText>
+									</div>
+								</ui:fragment>
+							</h:panelGroup>
 						</div>
 					</div>
 					<div class="control-group">
