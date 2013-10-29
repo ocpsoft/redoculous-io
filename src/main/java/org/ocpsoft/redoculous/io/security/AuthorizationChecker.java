@@ -2,10 +2,11 @@ package org.ocpsoft.redoculous.io.security;
 
 import static org.picketlink.idm.model.basic.BasicModel.hasRole;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -17,12 +18,14 @@ import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.Role;
 
 @Named("auth")
-@RequestScoped
-public class AuthorizationChecker
+@SessionScoped
+public class AuthorizationChecker implements Serializable
 {
-   private Map<String, Boolean> applicationRoles = new HashMap<String, Boolean>();
-   private Map<String, Boolean> groups = new HashMap<String, Boolean>();
-   private Map<String, Boolean> groupRoles = new HashMap<String, Boolean>();
+   private static final long serialVersionUID = 4050091154625527527L;
+
+   private final Map<String, Boolean> applicationRoles = new HashMap<String, Boolean>();
+   private final Map<String, Boolean> groups = new HashMap<String, Boolean>();
+   private final Map<String, Boolean> groupRoles = new HashMap<String, Boolean>();
 
    @Inject
    private Identity identity;

@@ -7,6 +7,7 @@
 package org.ocpsoft.redoculous.io.security;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -36,7 +37,7 @@ public class PicketLinkProducer
    private EntityManager picketLinkEntityManager;
 
    @Produces
-   @RequestScoped
+   @SessionScoped
    public User loggedInUser(Identity identity, IdentityManager manager)
    {
       Account account = identity.getAccount();

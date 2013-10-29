@@ -72,6 +72,18 @@
          <version>1.0.0-SNAPSHOT</version>
       </dependency>
 
+      <!-- Needed for Proxy -->
+      <dependency>
+         <groupId>org.mitre.dsmiley.httpproxy</groupId>
+         <artifactId>smiley-http-proxy-servlet</artifactId>
+         <version>1.3</version>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpclient</artifactId>
+         <version>4.3.1</version>
+      </dependency>
+
       <!-- Import the PicketLink API, we deploy this as library with the application, and can compile against it -->
       <dependency>
          <groupId>org.picketlink</groupId>

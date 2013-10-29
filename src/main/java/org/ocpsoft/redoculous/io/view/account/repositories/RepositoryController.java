@@ -12,6 +12,8 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
 import org.ocpsoft.redoculous.io.core.RepositoryOperations;
 import org.ocpsoft.redoculous.io.model.account.UserProfile;
@@ -54,7 +56,8 @@ public class RepositoryController implements Serializable
    @RequestAction
    public void loadRepo()
    {
-      for (SourceRepository repo : profile.getRepositories()) {
+      for (SourceRepository repo : profile.getRepositories())
+      {
          if (!repo.isDeleted() && repo.getUrl().equals(repoUrl))
          {
             repository = repo;
@@ -72,6 +75,23 @@ public class RepositoryController implements Serializable
    {
       repository.setApiKey(UUID.randomUUID().toString());
       em.merge(repository);
+   }
+
+   public boolean isRepositoryApiKey(String repoUrl, String key)
+   {
+      TypedQuery<SourceRepository> query = em.createQuery("FROM SourceRepository r WHERE r.apiKey=:key",
+               SourceRepository.class);
+      query.setParameter("key", key);
+      SourceRepository result = null;
+      try
+      {
+         result = query.getSingleResult();
+      }
+      catch (NoResultException e)
+      {
+         return false;
+      }
+      return result.getUrl().trim().equals(repoUrl);
    }
 
    public Object add()
@@ -108,7 +128,8 @@ public class RepositoryController implements Serializable
             throw new ValidatorException(FacesMessages.error("Name must be shorter than 32 characters."));
          }
 
-         for (SourceRepository repo : profile.getRepositories()) {
+         for (SourceRepository repo : profile.getRepositories())
+         {
             if (repo.getUrl().equals(repoUrl))
             {
                throw new ValidatorException(
@@ -124,7 +145,8 @@ public class RepositoryController implements Serializable
       {
          String repoUrl = (String) value;
 
-         for (SourceRepository repo : profile.getRepositories()) {
+         for (SourceRepository repo : profile.getRepositories())
+         {
             if (repo.getUrl().equals(repoUrl))
             {
                throw new ValidatorException(
