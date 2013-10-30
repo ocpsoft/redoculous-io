@@ -37,6 +37,13 @@ body.form #main input[type=text] {
 	margin-bottom: 15px;
 }
 
+.spinner {
+	height: 12px;
+	margin-left: 5px;
+	position: relative;
+	top: -1px;
+}
+
 /** Icons */
 [class^="icon-"],[class*=" icon-"] {
 	display: inline-block;

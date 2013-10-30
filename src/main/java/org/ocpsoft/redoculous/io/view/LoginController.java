@@ -54,8 +54,10 @@ public class LoginController implements Serializable
          Address address = AddressBuilder.create(target);
          Navigate navigate = Navigate.to(address.getPath());
          for (Entry<String, List<String>> param : QueryStringBuilder.createNew().addParameters(address.getQuery())
-                  .getParameterMap().entrySet()) {
-            for (String value : param.getValue()) {
+                  .getParameterMap().entrySet())
+         {
+            for (String value : param.getValue())
+            {
                navigate.with(param.getKey(), value);
             }
          }

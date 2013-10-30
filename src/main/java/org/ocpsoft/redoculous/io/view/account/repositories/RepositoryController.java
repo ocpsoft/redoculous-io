@@ -21,6 +21,7 @@ import org.ocpsoft.redoculous.io.model.repositories.SourceRepository;
 import org.ocpsoft.redoculous.io.util.jsf.FacesMessages;
 import org.ocpsoft.redoculous.io.util.jsf.FacesUtils;
 import org.ocpsoft.redoculous.rest.model.RepositoryStatus;
+import org.ocpsoft.redoculous.rest.model.RepositoryStatus.State;
 import org.ocpsoft.rewrite.annotation.Parameter;
 import org.ocpsoft.rewrite.annotation.PathPattern;
 import org.ocpsoft.rewrite.annotation.RequestAction;
@@ -110,6 +111,12 @@ public class RepositoryController implements Serializable
    public void initialize(String url)
    {
       operations.initializeRepository(url);
+   }
+
+   public boolean isWorking()
+   {
+      State state = getRepositoryStatus().getState();
+      return !State.INITIALIZED.equals(state) && !State.ERROR.equals(state);
    }
 
    public Object save()

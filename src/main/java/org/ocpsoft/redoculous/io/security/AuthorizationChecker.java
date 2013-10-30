@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -18,7 +18,7 @@ import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.Role;
 
 @Named("auth")
-@SessionScoped
+@RequestScoped
 public class AuthorizationChecker implements Serializable
 {
    private static final long serialVersionUID = 4050091154625527527L;

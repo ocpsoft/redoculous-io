@@ -82,10 +82,13 @@
 							<t:poll interval="1000" timeout="120000"
 								render="form:actions status"
 								cancel="$('#status').text() == 'INITIALIZED';"
-								rendered="#{repositoryController.repositoryStatus.state ne 'INITIALIZED' and repositoryController.repositoryStatus.state ne 'ERROR'}" />
+								rendered="#{repositoryController.isWorking()}" />
 							<h:panelGroup id="status">
 								<h:outputText
 									value="#{repositoryController.repositoryStatus.state}" />
+								<h:graphicImage library="img" name="ajax-loader.gif"
+									styleClass="spinner"
+									rendered="#{repositoryController.isWorking()}" />
 								<ui:fragment
 									rendered="#{repositoryController.repositoryStatus.state eq 'ERROR'}">
 									<div class="small" style="color: red;">
