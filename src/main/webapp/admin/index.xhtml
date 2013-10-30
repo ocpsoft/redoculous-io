@@ -44,7 +44,7 @@
 					<div class="control-group">
 						<label class="control-label">Connection Status:</label>
 						<div class="controls">
-							<t:poll interval="10000" timeout="120000" render="status" />
+							<t:poll interval="5000" timeout="120000" render="status" />
 							<h:outputText id="status"
 								value="#{adminController.getConnectionStatus(settings.redoculousURL)}" />
 						</div>

@@ -8,6 +8,7 @@
 	<composite:attribute name="interval" required="true" />
 	<composite:attribute name="timeout" required="true" />
 	<composite:attribute name="render" required="true" />
+	<composite:attribute name="cancel" required="false" />
 </composite:interface>
 
 <composite:implementation>
@@ -19,7 +20,7 @@
 		/* <![CDATA[ */
 		jsf.ajax.addOnError(redoculoustags.poll.init("#{cc.clientId}",
 				"#{cc.attrs.interval}", "#{cc.attrs.timeout}",
-				"#{cc.attrs.render}"));
+				"#{cc.attrs.render}", "#{cc.attrs.cancel}"));
 		/* ]]> */
 	</script>
 </composite:implementation>

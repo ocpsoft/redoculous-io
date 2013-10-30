@@ -59,7 +59,8 @@
 
 								<h:commandButton type="submit" styleClass="btn"
 									value="Reset API Key"
-									action="#{repositoryController.regenerateApiKey}">
+									action="#{repositoryController.regenerateApiKey}"
+									onclick="return window.confirm('Really reset API key for all applications?')">
 									<f:ajax execute="apikey @this" render="apikey" />
 								</h:commandButton>
 
@@ -78,7 +79,10 @@
 					<div class="control-group">
 						<label class="control-label">Status:</label>
 						<div class="controls">
-							<t:poll interval="10000" timeout="120000" render="form:actions status" />
+							<t:poll interval="1000" timeout="120000"
+								render="form:actions status"
+								cancel="$('#status').text() == 'INITIALIZED';"
+								rendered="#{repositoryController.repositoryStatus.state ne 'INITIALIZED' and repositoryController.repositoryStatus.state ne 'ERROR'}" />
 							<h:panelGroup id="status">
 								<h:outputText
 									value="#{repositoryController.repositoryStatus.state}" />
