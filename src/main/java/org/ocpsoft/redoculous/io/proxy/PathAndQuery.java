@@ -45,6 +45,7 @@ import org.ocpsoft.urlbuilder.Address;
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
+@SuppressWarnings("deprecation")
 public class PathAndQuery extends HttpCondition implements Parameterized
 {
    private final ParameterizedPatternParser expression;

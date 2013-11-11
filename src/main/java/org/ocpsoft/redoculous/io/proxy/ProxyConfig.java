@@ -6,6 +6,8 @@
  */
 package org.ocpsoft.redoculous.io.proxy;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
@@ -18,15 +20,15 @@ import org.ocpsoft.rewrite.config.Operation;
 import org.ocpsoft.rewrite.config.Subset;
 import org.ocpsoft.rewrite.context.EvaluationContext;
 import org.ocpsoft.rewrite.event.Rewrite;
+import org.ocpsoft.rewrite.param.ParameterStore;
+import org.ocpsoft.rewrite.param.Parameterized;
+import org.ocpsoft.rewrite.param.RegexParameterizedPatternParser;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
 import org.ocpsoft.rewrite.servlet.config.Query;
-import org.ocpsoft.rewrite.servlet.http.event.HttpServletRewrite;
-import org.ocpsoft.rewrite.servlet.util.QueryStringBuilder;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-@SuppressWarnings("deprecation")
 public class ProxyConfig extends HttpConfigurationProvider
 {
    @Inject
@@ -54,25 +56,46 @@ public class ProxyConfig extends HttpConfigurationProvider
                            @Override
                            public boolean evaluate(Rewrite event, EvaluationContext context)
                            {
-                              QueryStringBuilder query = QueryStringBuilder.createNew().addParameters(
-                                       ((HttpServletRewrite) event).getAddress().getQuery());
-                              String repoUrl = query.getParameter("repo");
-                              String key = query.getParameter("key");
-                              return controller.isRepositoryApiKey(repoUrl, key);
+                              String repo = Parameters.retrieve(context, "repo");
+                              String key = Parameters.retrieve(context, "key");
+                              return controller.isRepositoryApiKey(repo, key);
                            }
                         })
-                        .perform(new Operation()
-                        {
-                           @Override
-                           public void perform(Rewrite event, EvaluationContext context)
-                           {
-                              String contextPath = ((HttpServletRewrite) event).getServletContext().getContextPath();
-                              String url = ((HttpServletRewrite) event).getAddress().getPathAndQuery()
-                                       .replaceFirst(contextPath + "/api", "");
-                              Proxy.to(settings.getRedoculousURL()
-                                       + url + "&nogzip").perform(event, context);
-                           }
-                        })));
+                        .perform(new ProxyOperation(settings, "/{url}&nogzip&nogzip")))
+               );
+   }
+
+   public class ProxyOperation implements Operation, Parameterized
+   {
+      private final Settings settings;
+      private final String toSuffix;
+      private ParameterStore store;
+
+      public ProxyOperation(Settings settings, String toSuffix)
+      {
+         this.settings = settings;
+         this.toSuffix = toSuffix;
+      }
+
+      @Override
+      public void perform(Rewrite event, EvaluationContext context)
+      {
+         Proxy proxy = Proxy.to(settings.getRedoculousURL() + toSuffix);
+         proxy.setParameterStore(store);
+         proxy.perform(event, context);
+      }
+
+      @Override
+      public Set<String> getRequiredParameterNames()
+      {
+         return new RegexParameterizedPatternParser(toSuffix).getRequiredParameterNames();
+      }
+
+      @Override
+      public void setParameterStore(ParameterStore store)
+      {
+         this.store = store;
+      }
    }
 
    @Override

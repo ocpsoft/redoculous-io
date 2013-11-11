@@ -26,7 +26,6 @@ import java.util.Formatter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -51,6 +50,7 @@ import org.apache.http.message.HeaderGroup;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.ocpsoft.logging.Logger;
 
 /**
  * An HTTP reverse proxy/gateway servlet. It is designed to be extended for customization if desired. Most of the work
@@ -66,10 +66,11 @@ import org.apache.http.util.EntityUtils;
  * 
  * @author David Smiley dsmiley@mitre.org
  */
-public class ProxyServlet extends HttpServlet
+public class ProxyServlet
 {
-
    /* INIT PARAMETER NAME CONSTANTS */
+
+   private static final long serialVersionUID = -362164247914670579L;
 
    /**
     * A boolean parameter name to enable logging of input and target URLs to the servlet log.
@@ -85,23 +86,21 @@ public class ProxyServlet extends HttpServlet
 
    protected boolean doLog = false;
    protected URI targetUriObj;
-   /**
-    * targetUriObj.toString()
-    */
    protected String targetUri;
    protected HttpClient proxyClient;
 
-   @Override
-   public String getServletInfo()
+   private ServletConfig servletConfig;
+
+   private static final Logger logger = Logger.getLogger(ProxyServlet.class);
+
+   public ServletConfig getServletConfig()
    {
-      return "A proxy servlet by David Smiley, dsmiley@mitre.org";
+      return servletConfig;
    }
 
-   @Override
    public void init(ServletConfig servletConfig) throws ServletException
    {
-      super.init(servletConfig);
-
+      this.servletConfig = servletConfig;
       String doLogStr = servletConfig.getInitParameter(P_LOG);
       if (doLogStr != null)
       {
@@ -158,7 +157,6 @@ public class ProxyServlet extends HttpServlet
       hcParams.setParameter(hcParamName, val_obj);
    }
 
-   @Override
    public void destroy()
    {
       /*
@@ -166,10 +164,8 @@ public class ProxyServlet extends HttpServlet
        */
       if (proxyClient != null)
          proxyClient.getConnectionManager().shutdown();
-      super.destroy();
    }
 
-   @Override
    protected void service(HttpServletRequest servletRequest, HttpServletResponse servletResponse)
             throws ServletException, IOException
    {
@@ -205,7 +201,7 @@ public class ProxyServlet extends HttpServlet
           */
          if (doLog)
          {
-            log("proxy " + method + " uri: " + servletRequest.getRequestURI() + " -- "
+            logger.debug("proxy " + method + " uri: " + servletRequest.getRequestURI() + " -- "
                      + proxyRequest.getRequestLine().getUri());
          }
          HttpResponse proxyResponse = proxyClient.execute(URIUtils.extractHost(targetUriObj), proxyRequest);
@@ -307,7 +303,7 @@ public class ProxyServlet extends HttpServlet
       }
       catch (IOException e)
       {
-         log(e.getMessage(), e);
+         logger.warn(e.getMessage(), e);
       }
    }
 

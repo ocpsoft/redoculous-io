@@ -67,7 +67,7 @@
 
 								<h:commandButton type="submit" styleClass="btn"
 									value="Retry Initialization"
-									rendered="#{repositoryController.repositoryStatus.state eq 'ERROR'}"
+									rendered="#{repositoryController.repositoryStatus.state eq 'ERROR' || repositoryController.repositoryStatus.state eq 'MISSING'}"
 									action="#{repositoryController.initialize(repositoryController.repository.url)}">
 									<f:ajax execute="@this" render="@this :status" />
 								</h:commandButton>

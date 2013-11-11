@@ -116,7 +116,7 @@ public class RepositoryController implements Serializable
    public boolean isWorking()
    {
       State state = getRepositoryStatus().getState();
-      return !State.INITIALIZED.equals(state) && !State.ERROR.equals(state);
+      return !State.INITIALIZED.equals(state) && !State.ERROR.equals(state) && !State.MISSING.equals(state);
    }
 
    public Object save()
