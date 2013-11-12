@@ -5,6 +5,7 @@ import javax.servlet.ServletContext;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
+import org.ocpsoft.rewrite.config.OperationBuilder;
 import org.ocpsoft.rewrite.context.EvaluationContext;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
 import org.ocpsoft.rewrite.servlet.config.HttpOperation;
@@ -24,18 +25,27 @@ public class LogoutConfiguration extends HttpConfigurationProvider
       return ConfigurationBuilder.begin()
                .addRule()
                .when(Direction.isInbound().and(Path.matches("/logout")))
-               .perform(new HttpOperation() {
-                  @Override
-                  public void performHttp(HttpServletRewrite event, EvaluationContext context)
-                  {
-                     event.getRequest().getSession().invalidate();
-                  }
-               }.and(Redirect.temporary(context.getContextPath() + "/")));
+               .perform(Session.logout().and(Redirect.temporary(context.getContextPath() + "/")));
    }
 
    @Override
    public int priority()
    {
       return Integer.MIN_VALUE;
+   }
+
+   private static final class Session extends HttpOperation
+   {
+      // TODO Move to Rewrite proper.
+      @Override
+      public void performHttp(HttpServletRewrite event, EvaluationContext context)
+      {
+         event.getRequest().getSession().invalidate();
+      }
+
+      public static OperationBuilder logout()
+      {
+         return new Session();
+      }
    }
 }
