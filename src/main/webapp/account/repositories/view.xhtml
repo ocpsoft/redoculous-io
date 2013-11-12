@@ -60,7 +60,7 @@
 								<h:commandButton type="submit" styleClass="btn"
 									value="Reset API Key"
 									action="#{repositoryController.regenerateApiKey}"
-									onclick="return window.confirm('Really reset API key for all applications?')">
+									onclick="return window.confirm('Are you sure? This will revoke access for all existing clients.')">
 									<f:ajax execute="apikey @this" render="apikey" />
 								</h:commandButton>
 
