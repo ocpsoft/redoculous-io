@@ -10,6 +10,8 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 
 import org.ocpsoft.redoculous.io.model.account.UserProfile;
 import org.ocpsoft.redoculous.io.util.Threads;
@@ -39,7 +41,7 @@ public class SignupController implements Serializable
    @Inject
    private DefaultLoginCredentials credentials;
 
-   @Inject
+   @PersistenceContext(name = "primary", type = PersistenceContextType.EXTENDED)
    private EntityManager em;
 
    private static final int VALIDATION_FAILURE_DELAY = 200;

@@ -69,7 +69,7 @@ public class RepositoryController implements Serializable
       if (!repository.isPersistent())
          FacesUtils.send404();
       else
-         repositoryStatus = operations.getStatus(repository.getUrl());
+         repositoryStatus = operations.getStatus(profile, repository.getUrl());
    }
 
    public void regenerateApiKey()
@@ -78,7 +78,7 @@ public class RepositoryController implements Serializable
       em.merge(repository);
    }
 
-   public boolean isRepositoryApiKey(String repoUrl, String key)
+   public SourceRepository findRepositoryByKey(String key)
    {
       TypedQuery<SourceRepository> query = em.createQuery("FROM SourceRepository r WHERE r.apiKey=:key",
                SourceRepository.class);
@@ -90,9 +90,9 @@ public class RepositoryController implements Serializable
       }
       catch (NoResultException e)
       {
-         return false;
+         return null;
       }
-      return result.getUrl().trim().equals(repoUrl);
+      return result;
    }
 
    public Object add()
@@ -110,13 +110,19 @@ public class RepositoryController implements Serializable
 
    public void initialize(String url)
    {
-      operations.initializeRepository(url);
+      operations.initializeRepository(profile, url);
    }
 
    public boolean isWorking()
    {
       State state = getRepositoryStatus().getState();
       return !State.INITIALIZED.equals(state) && !State.ERROR.equals(state) && !State.MISSING.equals(state);
+   }
+
+   public boolean isWorkingOrMissing()
+   {
+      State state = getRepositoryStatus().getState();
+      return !State.INITIALIZED.equals(state) && !State.ERROR.equals(state);
    }
 
    public Object save()
@@ -187,8 +193,8 @@ public class RepositoryController implements Serializable
 
    public void repositoryUrlChanged(ValueChangeEvent e)
    {
-      operations.purgeRepository((String) e.getOldValue());
-      operations.initializeRepository((String) e.getNewValue());
+      operations.purgeRepository(profile, (String) e.getOldValue());
+      operations.initializeRepository(profile, (String) e.getNewValue());
    }
 
    public SourceRepository getRepository()

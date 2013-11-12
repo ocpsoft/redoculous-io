@@ -12,7 +12,9 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
 import org.ocpsoft.redoculous.io.model.admin.Settings;
+import org.ocpsoft.redoculous.io.model.repositories.SourceRepository;
 import org.ocpsoft.redoculous.io.view.account.repositories.RepositoryController;
+import org.ocpsoft.rewrite.bind.Evaluation;
 import org.ocpsoft.rewrite.config.Condition;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
@@ -49,19 +51,30 @@ public class ProxyConfig extends HttpConfigurationProvider
                /*
                 * Subset used to eliminate database overhead.
                 */
-               .perform(Subset.evaluate(ConfigurationBuilder.begin()
-                        .addRule()
-                        .when(new Condition()
-                        {
-                           @Override
-                           public boolean evaluate(Rewrite event, EvaluationContext context)
-                           {
-                              String repo = Parameters.retrieve(context, "repo");
-                              String key = Parameters.retrieve(context, "key");
-                              return controller.isRepositoryApiKey(repo, key);
-                           }
-                        })
-                        .perform(new ProxyOperation(settings, "/{url}&nogzip&nogzip")))
+               .perform(Subset.evaluate(
+                        ConfigurationBuilder.begin()
+                                 .addRule()
+                                 .when(new Condition()
+                                 {
+                                    @Override
+                                    public boolean evaluate(Rewrite event, EvaluationContext context)
+                                    {
+                                       String repo = Parameters.retrieve(context, "repo");
+                                       String key = Parameters.retrieve(context, "key");
+                                       SourceRepository repository = controller.findRepositoryByKey(key);
+                                       if (repository != null && repository.getUrl().trim().equals(repo)) {
+                                          Evaluation.property("repo.username").submit(event, context,
+                                                   repository.getOwner().getUsername());
+                                          return true;
+                                       }
+                                       return false;
+                                    }
+                                 })
+                                 .perform(
+                                          new ProxyOperation(settings, "/{url}&ns={repo.username}&nogzip&nogzip")
+                                 )
+                                 .where("repo.username").bindsTo(Evaluation.property("repo.username"))
+                        )
                );
    }
 

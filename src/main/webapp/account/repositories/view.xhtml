@@ -82,7 +82,7 @@
 							<t:poll interval="1000" timeout="120000"
 								render="form:actions status"
 								cancel="$('#status').text() == 'INITIALIZED';"
-								rendered="#{repositoryController.isWorking()}" />
+								rendered="#{repositoryController.isWorkingOrMissing()}" />
 							<h:panelGroup id="status">
 								<h:outputText
 									value="#{repositoryController.repositoryStatus.state}" />
